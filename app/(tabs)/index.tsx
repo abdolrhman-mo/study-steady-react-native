@@ -1,74 +1,184 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Audio } from 'expo-av';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function PomodoroTimer(): JSX.Element {
+    const [timeLeft, setTimeLeft] = useState<number>(0);
+    const [isRunning, setIsRunning] = useState<boolean>(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    const startTimer = (minutes: number): void => {
+        if (isRunning && !isPaused) return; // Prevent multiple timers
+        if (isPaused) {
+            resumeTimer();
+            return;
+        }
+        setTimeLeft(minutes * 60); // Convert minutes to seconds
+        setIsRunning(true);
+
+        const id = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(id);
+                    setIsRunning(false);
+                    playSound();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        setIntervalId(id);
+    };
+
+    const pauseTimer = (): void => {
+        if (intervalId) {
+            clearInterval(intervalId);
+            setIsPaused(true);
+            setIsRunning(false);
+        }
+    };
+
+    const resetTimer = (): void => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+        setTimeLeft(0);
+        setIsRunning(false);
+        setIsPaused(false);
+    };
+
+    const resumeTimer = (): void => {
+        if (isPaused) {
+            setIsPaused(false);
+            setIsRunning(true);
+
+            const id = setInterval(() => {
+                setTimeLeft((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(id);
+                        setIsRunning(false);
+                        playSound();
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            setIntervalId(id);
+        }
+    };
+
+    const playSound = async (): Promise<void> => {
+        const { sound } = await Audio.Sound.createAsync(require('../../assets/iphone_alarm.mp3'));
+        await sound.playAsync();
+    };
+
+    const formatTime = (seconds: number): string => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+            <View style={styles.buttonsContainer}>
+                <TouchableOpacity
+                    style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
+                    onPress={() => startTimer(25)}
+                    disabled={isRunning && !isPaused}
+                >
+                    <Text style={styles.buttonText}>25 Minutes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
+                    onPress={() => startTimer(50)}
+                    disabled={isRunning && !isPaused}
+                >
+                    <Text style={styles.buttonText}>50 Minutes</Text>
+                </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+                style={[styles.pauseButton, !isRunning && styles.disabledButton]}
+                onPress={pauseTimer}
+                disabled={!isRunning}
+            >
+                <Text style={styles.pauseButtonText}>Pause</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.resumeButton, !isPaused && styles.disabledButton]}
+                onPress={resumeTimer}
+                disabled={!isPaused}
+            >
+                <Text style={styles.resumeButtonText}>Resume</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
+                <Text style={styles.resetButtonText}>Reset</Text>
+            </TouchableOpacity>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
+    },
+    timer: {
+        fontSize: 48,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '80%',
+        marginBottom: 20,
+    },
+    button: {
+        backgroundColor: '#1f6feb',
+        padding: 15,
+        borderRadius: 10,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    pauseButton: {
+        marginTop: 20,
+        padding: 15,
+        backgroundColor: '#f0ad4e',
+        borderRadius: 10,
+    },
+    pauseButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    resumeButton: {
+        marginTop: 20,
+        padding: 15,
+        backgroundColor: '#5cb85c',
+        borderRadius: 10,
+    },
+    resumeButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    resetButton: {
+        marginTop: 20,
+        padding: 15,
+        backgroundColor: '#d9534f',
+        borderRadius: 10,
+    },
+    resetButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    disabledButton: {
+        opacity: 0.5,
+    },
 });

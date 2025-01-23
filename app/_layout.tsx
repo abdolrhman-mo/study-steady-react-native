@@ -1,39 +1,44 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { getToken } from '@/utils/tokenStorage';
+import { Stack, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    
+    const router = useRouter();
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    useEffect(() => {
+        //   const loggedIn = true; // Replace with your auth check logic
+        //   if (!loggedIn) {
+        //     router.push('/signup');
+        //   } else {
+        //     router.push('/');
+        //   }
+        // }, [router]);
 
-  if (!loaded) {
-    return null;
-  }
+        const checkAuth = async () => {
+            const token = await getToken();
+            setIsAuthenticated(!!token);
+            if (!token) {
+                router.replace('/login'); // Redirect to login if not authenticated
+            }
+        };
+  
+        checkAuth();
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
-}
+    }, []);
+
+    // if (!isAuthenticated) {
+    //     return null; // Render nothing until authentication check is complete
+    // }
+
+    return (
+        <Stack>
+            <Stack.Screen name="/" />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            {/* <Stack.Screen name="/search" /> */}
+            <Stack.Screen name='+not-found' />
+        </Stack>
+    );
+};
