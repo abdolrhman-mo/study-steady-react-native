@@ -1,7 +1,8 @@
 import { getToken } from '@/utils/tokenStorage';
 import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-
+import { Provider } from 'react-redux';
+import { store } from '@/redux/store';
 
 export default function RootLayout() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,19 +10,13 @@ export default function RootLayout() {
     const router = useRouter();
 
     useEffect(() => {
-        //   const loggedIn = true; // Replace with your auth check logic
-        //   if (!loggedIn) {
-        //     router.push('/signup');
-        //   } else {
-        //     router.push('/');
-        //   }
-        // }, [router]);
 
         const checkAuth = async () => {
             const token = await getToken();
+            console.log('layout token:', token);
             setIsAuthenticated(!!token);
             if (!token) {
-                router.replace('/login'); // Redirect to login if not authenticated
+                router.replace('/signup');
             }
         };
   
@@ -34,11 +29,12 @@ export default function RootLayout() {
     // }
 
     return (
-        <Stack>
-            <Stack.Screen name="/" />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            {/* <Stack.Screen name="/search" /> */}
-            <Stack.Screen name='+not-found' />
-        </Stack>
+        <Provider store={store}>
+            <Stack>
+                <Stack.Screen name="/" />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name='+not-found' />
+            </Stack>
+        </Provider>
     );
 };

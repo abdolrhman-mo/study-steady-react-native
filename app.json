@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "my-app",
+    "name": "Study Steady",
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -46,6 +46,7 @@
       "eas": {
         "projectId": "19f6b35a-c2b2-4205-a5cf-6f52721e7bb0"
       }
-    }
+    },
+    "owner": "makady"
   }
 }

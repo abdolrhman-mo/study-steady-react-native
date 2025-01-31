@@ -2,7 +2,8 @@ import { getToken } from '@/utils/tokenStorage';
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com',
+    // baseURL: 'http://127.0.0.1:8000',
+    baseURL: 'https://ycproject2.pythonanywhere.com',
     timeout: 10000,
     headers: { 'Content-Type': 'application/json' },
 });
@@ -10,8 +11,10 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     async (config) => {
         const token = await getToken();
+        // console.log('client token:', token);
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            // console.log(`we're sending tokennn`)
+            config.headers.Authorization = `Token ${token}`;
         }
         return config;
     },

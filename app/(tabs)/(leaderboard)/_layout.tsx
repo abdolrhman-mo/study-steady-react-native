@@ -1,24 +1,34 @@
 import { Stack } from 'expo-router';
 
-export default function HomeLayout() {
+export default function Layout() {
     return (
         <Stack
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: '#000',
+                    backgroundColor: '#e0f7fa',
                 },
-                headerTintColor: '#fff',
+                // headerTintColor: '#fff',
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
         }}>
-            <Stack.Screen name="leaderboard" />
-            <Stack.Screen name="search" />
             <Stack.Screen 
-                name="user/[username]"
-                // getId={
-                //     ({ params }) => String(Date.now())
-                // }
+                name="leaderboard"
+                options={{
+                    title: "المتابعة",
+                }} 
+            />
+            <Stack.Screen 
+                name="search" 
+                options={{
+                    title: "البحث",
+                }}
+            />
+            <Stack.Screen 
+                name="user/[id]"
+                options={{
+                    title: "الملف الشخصي للمستخدم",
+                }}
             />
         </Stack>
     );

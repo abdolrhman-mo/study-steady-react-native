@@ -11,6 +11,7 @@ export const useFetchData = (endpoint: string) => {
       try {
         const response = await apiClient.get(endpoint);
         setData(response.data);
+        // console.log('useFetchData data:', response.data);
       } catch (err: any) {
         if (err) {
             setError(err.message);

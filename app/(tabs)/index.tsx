@@ -1,35 +1,57 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, TouchableOpacity, Modal, Alert } from 'react-native';
 import { Audio } from 'expo-av';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { usePostData } from '@/api/hooks/usePostData';
+import { styles } from '@/components/timer/timer.styles';
+import { API_ENDPOINTS } from '@/api/endpoints';
 
 export default function PomodoroTimer(): JSX.Element {
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const [isPaused, setIsPaused] = useState<boolean>(false);
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [promptModalVisible, setPromptModalVisible] = useState<boolean>(false); // New state for prompt modal
+    const [duration, setDuration] = useState<number>(0);
+    const [isBreak, setIsBreak] = useState<boolean>(false);
+    const { data, loading, error, postDataToServer } = usePostData(API_ENDPOINTS.SESSION);
 
-    const startTimer = (minutes: number): void => {
-        if (isRunning && !isPaused) return; // Prevent multiple timers
-        if (isPaused) {
-            resumeTimer();
-            return;
+    useEffect(() => {
+        if (timeLeft === 0 && isRunning) {
+            clearInterval(intervalId!);
+            setIsRunning(false);
+            playSound();
+            setModalVisible(true);
+            if (!isBreak) {
+                saveSessionData(duration);
+            }
         }
-        setTimeLeft(minutes * 60); // Convert minutes to seconds
+    }, [timeLeft]);
+
+    const saveSessionData = async (duration: number): Promise<void> => {
+        await postDataToServer({ duration: 25 });
+    };
+
+    const startTimer = (minutes: number, breakTime: boolean = false): void => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+        setTimeLeft(minutes * 60);
+        setDuration(minutes); // Set the duration state
         setIsRunning(true);
+        setIsPaused(false);
+        setIsBreak(breakTime);
 
         const id = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(id);
-                    setIsRunning(false);
-                    playSound();
-                    return 0;
-                }
-                return prev - 1;
-            });
+            setTimeLeft((prev) => prev - 1);
         }, 1000);
 
         setIntervalId(id);
+
+        // Show the prompt modal when the timer starts
+        setPromptModalVisible(true);
     };
 
     const pauseTimer = (): void => {
@@ -40,30 +62,13 @@ export default function PomodoroTimer(): JSX.Element {
         }
     };
 
-    const resetTimer = (): void => {
-        if (intervalId) {
-            clearInterval(intervalId);
-        }
-        setTimeLeft(0);
-        setIsRunning(false);
-        setIsPaused(false);
-    };
-
     const resumeTimer = (): void => {
         if (isPaused) {
             setIsPaused(false);
             setIsRunning(true);
 
             const id = setInterval(() => {
-                setTimeLeft((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(id);
-                        setIsRunning(false);
-                        playSound();
-                        return 0;
-                    }
-                    return prev - 1;
-                });
+                setTimeLeft((prev) => prev - 1);
             }, 1000);
 
             setIntervalId(id);
@@ -72,7 +77,32 @@ export default function PomodoroTimer(): JSX.Element {
 
     const playSound = async (): Promise<void> => {
         const { sound } = await Audio.Sound.createAsync(require('../../assets/iphone_alarm.mp3'));
+        setSound(sound);
         await sound.playAsync();
+    };
+
+    const stopSound = async (): Promise<void> => {
+        if (sound) {
+            await sound.stopAsync();
+            setSound(null);
+        }
+    };
+
+    const handleBreak = (): void => {
+        stopSound();
+        startTimer(10, true); // Start a 10-minute break
+        setModalVisible(false);
+    };
+
+    const handleCancel = (): void => {
+        stopSound();
+        setModalVisible(false);
+    };
+
+    const handleNewSession = (): void => {
+        stopSound();
+        startTimer(duration);
+        setModalVisible(false);
     };
 
     const formatTime = (seconds: number): string => {
@@ -90,95 +120,107 @@ export default function PomodoroTimer(): JSX.Element {
                     onPress={() => startTimer(25)}
                     disabled={isRunning && !isPaused}
                 >
-                    <Text style={styles.buttonText}>25 Minutes</Text>
+                    <Icon name="timer-outline" size={20} color="#fff" />
+                    <Text style={styles.buttonText}>25 دقيقة</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
                     onPress={() => startTimer(50)}
                     disabled={isRunning && !isPaused}
                 >
-                    <Text style={styles.buttonText}>50 Minutes</Text>
+                    <Icon name="timer-outline" size={20} color="#fff" />
+                    <Text style={styles.buttonText}>50 دقيقة</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity
-                style={[styles.pauseButton, !isRunning && styles.disabledButton]}
-                onPress={pauseTimer}
-                disabled={!isRunning}
+            <View style={styles.controlButtonsContainer}>
+                {isRunning && !isPaused && (
+                    <TouchableOpacity
+                        style={styles.controlButton}
+                        onPress={pauseTimer}
+                    >
+                        <Icon name="pause-outline" size={20} color="#fff" />
+                        <Text style={styles.controlButtonText}>إيقاف مؤقت</Text>
+                    </TouchableOpacity>
+                )}
+                {isPaused && (
+                    <TouchableOpacity
+                        style={styles.controlButton}
+                        onPress={resumeTimer}
+                    >
+                        <Icon name="play-outline" size={20} color="#fff" />
+                        <Text style={styles.controlButtonText}>استئناف</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={handleCancel}
             >
-                <Text style={styles.pauseButtonText}>Pause</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.resumeButton, !isPaused && styles.disabledButton]}
-                onPress={resumeTimer}
-                disabled={!isPaused}
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>{isBreak ? "انتهت فترة الراحة!" : "الوقت انتهى!"}</Text>
+                        <View style={styles.modalButtonsContainer}>
+                            {isBreak ? (
+                                <>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={handleNewSession}
+                                    >
+                                        <Icon name="checkmark-outline" size={20} color="#fff" />
+                                        <Text style={styles.modalButtonText}>بدء جلسة جديدة</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={handleCancel}
+                                    >
+                                        <Icon name="close-outline" size={20} color="#fff" />
+                                        <Text style={styles.modalButtonText}>إلغاء</Text>
+                                    </TouchableOpacity>
+                                </>
+                            ) : (
+                                <>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={handleBreak}
+                                    >
+                                        <Icon name="checkmark-outline" size={20} color="#fff" />
+                                        <Text style={styles.modalButtonText}>خذ استراحة</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={handleCancel}
+                                    >
+                                        <Icon name="close-outline" size={20} color="#fff" />
+                                        <Text style={styles.modalButtonText}>إلغاء</Text>
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            {/* New Prompt Modal */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={promptModalVisible}
+                onRequestClose={() => setPromptModalVisible(false)}
             >
-                <Text style={styles.resumeButtonText}>Resume</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
-                <Text style={styles.resetButtonText}>Reset</Text>
-            </TouchableOpacity>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>من فضلك لا تخرج من البرنامج لكي لا يتوقف المؤقت.</Text>
+                        <TouchableOpacity
+                            style={styles.modalButton}
+                            onPress={() => setPromptModalVisible(false)}
+                        >
+                            <Icon name="close-outline" size={20} color="#fff" />
+                            <Text style={styles.modalButtonText}>موافق</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f5f5f5',
-    },
-    timer: {
-        fontSize: 48,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    buttonsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '80%',
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: '#1f6feb',
-        padding: 15,
-        borderRadius: 10,
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    pauseButton: {
-        marginTop: 20,
-        padding: 15,
-        backgroundColor: '#f0ad4e',
-        borderRadius: 10,
-    },
-    pauseButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    resumeButton: {
-        marginTop: 20,
-        padding: 15,
-        backgroundColor: '#5cb85c',
-        borderRadius: 10,
-    },
-    resumeButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    resetButton: {
-        marginTop: 20,
-        padding: 15,
-        backgroundColor: '#d9534f',
-        borderRadius: 10,
-    },
-    resetButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-});
