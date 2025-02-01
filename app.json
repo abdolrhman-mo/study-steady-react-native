@@ -2,6 +2,9 @@
   "expo": {
     "name": "Study Steady",
     "slug": "my-app",
+    "runtimeVersion": {
+        "policy": "appVersion"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,14 +12,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#E87C39"
       },
-      "package": "com.makady.myapp"
+      "package": "com.makady.myapp",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -47,6 +54,9 @@
         "projectId": "19f6b35a-c2b2-4205-a5cf-6f52721e7bb0"
       }
     },
-    "owner": "makady"
+    "owner": "makady",
+    "updates": {
+      "url": "https://u.expo.dev/19f6b35a-c2b2-4205-a5cf-6f52721e7bb0"
+    }
   }
 }
