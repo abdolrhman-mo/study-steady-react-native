@@ -1,9 +1,10 @@
-import { Link, Tabs } from 'expo-router'
+import { Link, Tabs, Stack } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { View, Text, Image } from 'react-native'
 import { getId } from '@/utils/tokenStorage'
 import { useEffect, useState } from 'react'
 import apiClient from '@/api/client'
+
 
 const hasOneDayPassed = (apiDateString: string) => {
   const apiDate = new Date(apiDateString) // Convert API string to Date object
@@ -55,59 +56,72 @@ export default function TabLayout() {
   if (!data) return <Text>لا توجد بيانات متاحة.</Text>
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: '#E87C39',
-        headerShadowVisible: false,
-        headerTitle: '',
-        headerLeft: () => (
-          <Image
-            source={require('@/assets/images/study steady icon.png')}
-            style={{ width: 120, height: 80, marginLeft: 10 }}
-          />
-        ),
-        headerRight: () => (
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-            <Link href={'/search'}>
-              <Ionicons name="search" size={24} color="#000" style={{ marginRight: 15 }} />
-            </Link>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name="flame" size={24} color="#ff4500" />
-              <Text style={{ marginLeft: 5, fontSize: 16, color: '#000', fontWeight: 'bold' }}>
-                {currentStreak}
-              </Text>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: '#E87C39',
+          headerShadowVisible: false,
+          headerTitle: '',
+          headerLeft: () => (
+            <Image
+              source={require('@/assets/images/study steady icon.png')}
+              style={{ width: 120, height: 80, marginLeft: 10 }}
+            />
+          ),
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+              <Link href={'/search'}>
+                <Ionicons name="search" size={24} color="#000" style={{ marginRight: 15 }} />
+              </Link>
+              <Link href={'/(tabs)/streak'}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="flame" size={24} color="#ff4500" />
+                  <Text style={{ marginLeft: 5, fontSize: 16, color: '#000', fontWeight: 'bold' }}>
+                    {currentStreak}
+                  </Text>
+                </View>
+              </Link>
             </View>
-          </View>
-        ),
-      }}
-    >
-      <Tabs.Screen
-        name="index"
+          ),
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'المؤقت',
+            tabBarIcon: ({ color, focused }) => (
+              <Ionicons name={focused ? 'timer-sharp' : 'timer-outline'} size={24} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="(leaderboard)"
+          options={{
+            title: 'المجتمع',
+            tabBarIcon: ({ color, focused }) => (
+              <Ionicons name={focused ? 'people' : 'people-outline'} size={24} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="(profile)"
+          options={{
+            tabBarItemStyle: { display: 'none' },
+            title: 'الملف الشخصي',
+            tabBarIcon: ({ color, focused }) => (
+              <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+        name="streak"
         options={{
-          title: 'المؤقت',
+          // tabBarItemStyle: { display: 'none' },
+          title: 'استريك',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'timer-sharp' : 'timer-outline'} size={24} color={color} />
+            <Ionicons name={focused ? 'flame' : 'flame-outline'} size={24} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="(leaderboard)"
-        options={{
-          title: 'لوحة المتصدرين',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'people' : 'people-outline'} size={24} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="(profile)"
-        options={{
-          title: 'الملف الشخصي',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+      </Tabs>
   )
 }

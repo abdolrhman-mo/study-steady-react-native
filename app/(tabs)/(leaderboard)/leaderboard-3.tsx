@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, FlatList, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, FlatList, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFollowingList } from '@/redux/followingSlice';
@@ -9,10 +9,8 @@ import { API_ENDPOINTS } from '@/api/endpoints';
 import { getId } from '@/utils/tokenStorage';
 import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 
 const Leaderboard = () => {
-    const navigation = useNavigation();
     const dispatch = useDispatch();
     const followingList = useSelector((state: RootState) => state.following.followingList);
     const { data, loading, error } = useFetchData(API_ENDPOINTS.FOLLOWING);
@@ -53,7 +51,10 @@ const Leaderboard = () => {
                 href={{ pathname: '/user/[id]', params: { id: item.id } }}
                 style={styles.link}
             >
-                <Text style={styles.name}>{item.username}</Text>
+                <View style={styles.itemContent}>
+                    <Image source={{ uri: item.profile_pic }} style={styles.avatar} />
+                    <Text style={styles.name}>{item.username}</Text>
+                </View>
             </Link>
             <Text style={styles.score}>{item.top_streak}</Text>
         </View>
@@ -76,21 +77,23 @@ const Leaderboard = () => {
             {/* Personal Info Section */}
             {userData && (
                 <View style={styles.personalInfo}>
-                    <View style={styles.infoBlock}>
-                        <Icon name="person-circle-outline" size={50} color="#2196F3" />
-                        <Text style={styles.infoText}>{userData.username}</Text>
+                    <View style={styles.profileHeader}>
+                        <Image
+                            source={{ uri: userData.profile_pic }}
+                            style={styles.profilePic}
+                        />
+                        <Text style={styles.username}>{userData.username}</Text>
                     </View>
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => navigation.navigate('FollowersFollowing')} >
-                        <Text style={styles.infoLabel}>المتابِعون</Text>
-                        <Text style={styles.infoText}>25</Text>
-                        {/* <Text style={styles.infoText}>{userData.followers_count}</Text> */}
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => navigation.navigate('FollowersFollowing')}>
+                    <View style={styles.infoBlock}>
+                        <Text style={styles.infoLabel}>المتابِعون</Text>
+                        <Text style={styles.infoText}>{userData.followers_count || 25}</Text>
+                    </View>
+
+                    <View style={styles.infoBlock}>
                         <Text style={styles.infoLabel}>المتابَعون</Text>
-                        <Text style={styles.infoText}>10</Text>
-                        {/* <Text style={styles.infoText}>{userData.following_count}</Text> */}
-                    </TouchableOpacity>
+                        <Text style={styles.infoText}>{userData.following_count || 10}</Text>
+                    </View>
                 </View>
             )}
 
@@ -119,31 +122,47 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#e0f7fa',
+        backgroundColor: '#f5f5f5',
     },
     searchBar: {
         height: 40,
-        borderColor: '#ccc',
+        borderColor: '#00796b',
         borderWidth: 1,
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        marginBottom: 15,
-        backgroundColor: '#fff',
+        borderRadius: 25,
+        paddingHorizontal: 15,
+        marginBottom: 20,
+        backgroundColor: '#ffffff',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    searchIcon: {
+        marginRight: 10,
     },
     personalInfo: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#f0f0f0',
-        padding: 15,
-        borderRadius: 10,
         marginBottom: 20,
-        // borderStyle: 'solid',
-        // borderWidth: 1,
-        // borderColor: '#ccc',
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
+        elevation: 3,
+        padding: 20,
+    },
+    profileHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    profilePic: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginRight: 20,
+    },
+    username: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#00796b',
     },
     infoBlock: {
-        alignItems: 'center',
+        marginBottom: 10,
     },
     infoLabel: {
         fontSize: 16,
@@ -153,24 +172,31 @@ const styles = StyleSheet.create({
     infoText: {
         fontSize: 18,
         color: '#444',
-        marginTop: 5,
     },
     item: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
+        padding: 15,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+    },
+    itemContent: {
+        flexDirection: 'row',
         alignItems: 'center',
     },
-    link: {
-        flex: 1,
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight: 10,
     },
     name: {
         fontSize: 18,
+        color: '#00796b',
     },
     score: {
         fontSize: 18,
+        color: '#444',
     },
     noFollowingMessage: {
         fontSize: 16,
@@ -187,6 +213,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#d32f2f',
         marginBottom: 10,
+    },
+    link: {
+        color: '#00796b',
+        fontSize: 18,
     },
 });
 

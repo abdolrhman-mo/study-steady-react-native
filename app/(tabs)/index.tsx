@@ -117,7 +117,7 @@ export default function PomodoroTimer(): JSX.Element {
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                     style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
-                    onPress={() => startTimer(25)}
+                    onPress={() => startTimer(.05)}
                     disabled={isRunning && !isPaused}
                 >
                     <Icon name="timer-outline" size={20} color="#fff" />

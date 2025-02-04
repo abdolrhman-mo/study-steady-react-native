@@ -9,10 +9,8 @@ import { API_ENDPOINTS } from '@/api/endpoints';
 import { getId } from '@/utils/tokenStorage';
 import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 
 const Leaderboard = () => {
-    const navigation = useNavigation();
     const dispatch = useDispatch();
     const followingList = useSelector((state: RootState) => state.following.followingList);
     const { data, loading, error } = useFetchData(API_ENDPOINTS.FOLLOWING);
@@ -75,22 +73,27 @@ const Leaderboard = () => {
 
             {/* Personal Info Section */}
             {userData && (
-                <View style={styles.personalInfo}>
-                    <View style={styles.infoBlock}>
-                        <Icon name="person-circle-outline" size={50} color="#2196F3" />
-                        <Text style={styles.infoText}>{userData.username}</Text>
+                <View style={styles.profileCard}>
+                    <View style={styles.profileHeader}>
+                        <Icon name="person-circle" size={60} color="#00796b" />
+                        <Text style={styles.username}>{userData.username}</Text>
                     </View>
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => navigation.navigate('FollowersFollowing')} >
-                        <Text style={styles.infoLabel}>المتابِعون</Text>
-                        <Text style={styles.infoText}>25</Text>
-                        {/* <Text style={styles.infoText}>{userData.followers_count}</Text> */}
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => navigation.navigate('FollowersFollowing')}>
-                        <Text style={styles.infoLabel}>المتابَعون</Text>
-                        <Text style={styles.infoText}>10</Text>
-                        {/* <Text style={styles.infoText}>{userData.following_count}</Text> */}
-                    </TouchableOpacity>
+                    <View style={styles.statsContainer}>
+                        <View style={styles.statBox}>
+                            <Text style={styles.statNumber}>25</Text>
+                            <Text style={styles.statLabel}>المتابِعون</Text>
+                            {/* <Text style={styles.statNumber}>{userData.followers_count}</Text> */}
+                        </View>
+
+                        <View style={styles.divider} />
+
+                        <View style={styles.statBox}>
+                            <Text style={styles.statNumber}>10</Text>
+                            <Text style={styles.statLabel}>المتابَعون</Text>
+                            {/* <Text style={styles.statNumber}>{userData.following_count}</Text> */}
+                        </View>
+                    </View>
                 </View>
             )}
 
@@ -130,31 +133,57 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: '#fff',
     },
-    personalInfo: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#f0f0f0',
-        padding: 15,
-        borderRadius: 10,
+
+    // Personal Info Section Styles
+    profileCard: {
+        backgroundColor: '#ffffff',
+        borderRadius: 15,
+        padding: 20,
         marginBottom: 20,
-        // borderStyle: 'solid',
-        // borderWidth: 1,
-        // borderColor: '#ccc',
-    },
-    infoBlock: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
         alignItems: 'center',
     },
-    infoLabel: {
-        fontSize: 16,
-        color: '#00796b',
+    profileHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    username: {
+        fontSize: 20,
         fontWeight: 'bold',
+        color: '#00796b',
+        marginLeft: 10,
     },
-    infoText: {
-        fontSize: 18,
-        color: '#444',
-        marginTop: 5,
+    statsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
     },
+    statBox: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    statNumber: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#00796b',
+    },
+    statLabel: {
+        fontSize: 14,
+        color: '#555',
+        marginTop: 4,
+    },
+    divider: {
+        width: 1,
+        backgroundColor: '#ccc',
+        marginHorizontal: 10,
+    },
+
+    // Other Styles
     item: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -191,3 +220,4 @@ const styles = StyleSheet.create({
 });
 
 export default Leaderboard;
+// This File Contains to design for the leaderboard

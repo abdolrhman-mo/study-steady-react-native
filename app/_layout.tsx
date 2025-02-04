@@ -33,6 +33,7 @@ export default function RootLayout() {
             <Stack>
                 <Stack.Screen name="/" />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                {/* <Stack.Screen name="streak" options={{ headerShown: true, headerTitle: 'Streak' }} /> */}
                 <Stack.Screen name='+not-found' />
             </Stack>
         </Provider>
