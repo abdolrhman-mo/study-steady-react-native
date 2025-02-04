@@ -13,7 +13,7 @@ export default function PomodoroTimer(): JSX.Element {
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [promptModalVisible, setPromptModalVisible] = useState<boolean>(false); // New state for prompt modal
+    const [promptModalVisible, setPromptModalVisible] = useState<boolean>(false);
     const [duration, setDuration] = useState<number>(0);
     const [isBreak, setIsBreak] = useState<boolean>(false);
     const { data, loading, error, postDataToServer } = usePostData(API_ENDPOINTS.SESSION);
