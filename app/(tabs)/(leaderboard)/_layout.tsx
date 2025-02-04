@@ -16,12 +16,20 @@ export default function Layout() {
                 name="leaderboard"
                 options={{
                     title: "المتابعة",
+                    headerShown: false, // This hides the header bar
                 }} 
             />
             <Stack.Screen 
                 name="search" 
                 options={{
                     title: "البحث",
+                }}
+            />
+            <Stack.Screen 
+                name="FollowersFollowing" 
+                options={{
+                    title: "علاقاتك العامة",
+                    // headerShown: false, // This hides the header bar
                 }}
             />
             <Stack.Screen 

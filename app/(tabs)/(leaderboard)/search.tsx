@@ -49,17 +49,20 @@ const SearchFriends = () => {
                 data={filteredFriends}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <Link
-                        href={{
-                            pathname: '/user/[id]',
-                            params: { id: item.id },
-                        }}
-                        style={styles.friendItem}
-                    >
-                        {item.username}
-                    </Link>
+                    <TouchableOpacity onPress={() => {setSearchQuery(''); setFilteredFriends(null);}} >
+                        <Link
+                            href={{
+                                pathname: '/user/[id]',
+                                params: { id: item.id },
+                            }}
+                            style={styles.friendItem}
+                        >
+                            {item.username}
+                        </Link>
+                    </TouchableOpacity>
                 )}
             />
+
             {/* Add the Link to /leaderboard at the bottom */}
             <Link href="/leaderboard" asChild>
                 <TouchableOpacity style={styles.leaderboardLink}>

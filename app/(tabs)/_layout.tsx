@@ -96,7 +96,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="(leaderboard)"
           options={{
-            title: 'لوحة المتصدرين',
+            title: 'المجتمع',
             tabBarIcon: ({ color, focused }) => (
               <Ionicons name={focused ? 'people' : 'people-outline'} size={24} color={color} />
             ),
@@ -105,6 +105,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="(profile)"
           options={{
+            tabBarItemStyle: { display: 'none' },
             title: 'الملف الشخصي',
             tabBarIcon: ({ color, focused }) => (
               <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
@@ -114,8 +115,8 @@ export default function TabLayout() {
         <Tabs.Screen
         name="streak"
         options={{
-          tabBarItemStyle: { display: 'none' },
-          title: 'Streak',
+          // tabBarItemStyle: { display: 'none' },
+          title: 'استريك',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'flame' : 'flame-outline'} size={24} color={color} />
           ),
