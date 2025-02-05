@@ -14,6 +14,7 @@ const User = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [following, setFollowing] = useState<boolean>(false)
+  const [isProcessing, setIsProcessing] = useState<boolean>(false) // New state for tracking the follow/unfollow process
 
   const { id: userId } = useLocalSearchParams()
 
@@ -49,22 +50,23 @@ const User = () => {
       const myId = await getId()
 
       if (myId && userId) {
+        setIsProcessing(true) // Set processing state to true while follow/unfollow is in progress
+        
         const endpoint = following
           ? `${API_ENDPOINTS.UNFOLLOW}${myId}/${userId}/`
           : `${API_ENDPOINTS.FOLLOW}${myId}/${userId}/`
 
-        const method = following ? 'DELETE' : 'POST' // Replace 'POST' for unfollow with DELETE if your backend supports it
+        const method = following ? 'DELETE' : 'POST'
 
         const response = await apiClient({
           url: endpoint,
           method,
         })
 
-        // Update redux state
         if (following) {
-            dispatch(unfollowUser({ id: Number(userId) }))
+          dispatch(unfollowUser({ id: Number(userId) }))
         } else {
-            dispatch(followUser({ id: userId, username: userData.username, top_streak: userData.top_streak }))
+          dispatch(followUser({ id: userId, username: userData.username, top_streak: userData.top_streak }))
         }
 
         setFollowing(!following)
@@ -73,6 +75,8 @@ const User = () => {
       }
     } catch (err: any) {
       console.error(err.message)
+    } finally {
+      setIsProcessing(false) // Set processing state to false once the action is done
     }
   }
 
@@ -87,9 +91,14 @@ const User = () => {
       <TouchableOpacity
         style={following ? styles.unfollowButton : styles.followButton}
         onPress={handleFollowToggle}
+        disabled={isProcessing} // Disable button while processing
       >
         <Text style={styles.buttonText}>
-          {following ? 'إلغاء المتابعة' : 'متابعة'}
+          {isProcessing
+            ? 'جاري المعالجة...' // Show "Processing..." text when the action is in progress
+            : following
+            ? 'إلغاء المتابعة'
+            : 'متابعة'}
         </Text>
       </TouchableOpacity>
     </View>
