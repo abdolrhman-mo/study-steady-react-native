@@ -13,9 +13,10 @@ export default function PomodoroTimer(): JSX.Element {
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [promptModalVisible, setPromptModalVisible] = useState<boolean>(false); // New state for prompt modal
+    const [promptModalVisible, setPromptModalVisible] = useState<boolean>(false);
     const [duration, setDuration] = useState<number>(0);
     const [isBreak, setIsBreak] = useState<boolean>(false);
+    const [streak, setStreak] = useState<number>(0);  // Track streak
     const { data, loading, error, postDataToServer } = usePostData(API_ENDPOINTS.SESSION);
 
     useEffect(() => {
@@ -26,6 +27,7 @@ export default function PomodoroTimer(): JSX.Element {
             setModalVisible(true);
             if (!isBreak) {
                 saveSessionData(duration);
+                setStreak((prevStreak) => prevStreak + 1); // Increase streak after each session
             }
         }
     }, [timeLeft]);
@@ -39,7 +41,7 @@ export default function PomodoroTimer(): JSX.Element {
             clearInterval(intervalId);
         }
         setTimeLeft(minutes * 60);
-        setDuration(minutes); // Set the duration state
+        setDuration(minutes);
         setIsRunning(true);
         setIsPaused(false);
         setIsBreak(breakTime);
@@ -50,7 +52,6 @@ export default function PomodoroTimer(): JSX.Element {
 
         setIntervalId(id);
 
-        // Show the prompt modal when the timer starts
         setPromptModalVisible(true);
     };
 
@@ -90,7 +91,7 @@ export default function PomodoroTimer(): JSX.Element {
 
     const handleBreak = (): void => {
         stopSound();
-        startTimer(10, true); // Start a 10-minute break
+        startTimer(10, true);
         setModalVisible(false);
     };
 
@@ -111,13 +112,35 @@ export default function PomodoroTimer(): JSX.Element {
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
+    // Alert component to show when streak is zero
+    const renderStreakAlert = () => {
+        if (streak === 0) {
+            return (
+                <View style={styles.alertContainer}>
+                    <View style={styles.alert}>
+                        <Text style={styles.alertText}>ابدأ تايمر وذاكر عشان يبدأ ستريك </Text>
+                        <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
+                        <TouchableOpacity
+                            style={styles.alertCloseButton}
+                            onPress={() => setStreak(1)} // Dismiss alert by updating streak
+                        >
+                            <Icon name="close" size={20} color="#fff" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            );
+        }
+        return null;
+    };
+
     return (
         <View style={styles.container}>
+            {renderStreakAlert()}
             <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                     style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
-                    onPress={() => startTimer(.05)}
+                    onPress={() => startTimer(25)}
                     disabled={isRunning && !isPaused}
                 >
                     <Icon name="timer-outline" size={20} color="#fff" />
@@ -201,7 +224,6 @@ export default function PomodoroTimer(): JSX.Element {
                     </View>
                 </View>
             </Modal>
-            {/* New Prompt Modal */}
             <Modal
                 animationType="slide"
                 transparent={true}

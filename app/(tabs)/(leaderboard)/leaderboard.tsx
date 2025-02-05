@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, FlatList, TextInput, Button, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFollowingList } from '@/redux/followingSlice';
 import { RootState } from '@/redux/store';
@@ -46,18 +46,21 @@ const Leaderboard = () => {
                 <Text style={styles.errorText}>خطأ: {error}</Text>
             </View>
         );
-
-    const renderItem = ({ item }: { item: any }) => (
-        <View style={styles.item}>
-            <Link
-                href={{ pathname: '/user/[id]', params: { id: item.id } }}
-                style={styles.link}
-            >
-                <Text style={styles.name}>{item.username}</Text>
-            </Link>
-            <Text style={styles.score}>{item.top_streak}</Text>
-        </View>
-    );
+        const renderItem = ({ item }: { item: any }) => (
+            <View style={styles.item}>
+                <Link
+                    href={{ pathname: '/user/[id]', params: { id: item.id } }}
+                    style={styles.link}
+                >
+                    <Text style={styles.name}>{item.username}</Text>
+                </Link>
+                <View style={styles.streakContainer}>
+                    <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
+                    <Text style={styles.score}>{item.top_streak}</Text>
+                </View>
+            </View>
+        );
+        
 
     const filteredList = followingList?.filter((user: any) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
@@ -80,13 +83,13 @@ const Leaderboard = () => {
                         <Icon name="person-circle-outline" size={50} color="#2196F3" />
                         <Text style={styles.infoText}>{userData.username}</Text>
                     </View>
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => navigation.navigate('FollowersFollowing')} >
+                    <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')} >
                         <Text style={styles.infoLabel}>المتابِعون</Text>
                         <Text style={styles.infoText}>25</Text>
                         {/* <Text style={styles.infoText}>{userData.followers_count}</Text> */}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => navigation.navigate('FollowersFollowing')}>
+                    <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
                         <Text style={styles.infoLabel}>المتابَعون</Text>
                         <Text style={styles.infoText}>10</Text>
                         {/* <Text style={styles.infoText}>{userData.following_count}</Text> */}
@@ -187,6 +190,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#d32f2f',
         marginBottom: 10,
+    },
+    streakContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    trophyIcon: {
+        marginRight: 5, // Adds space between the trophy and the score
     },
 });
 

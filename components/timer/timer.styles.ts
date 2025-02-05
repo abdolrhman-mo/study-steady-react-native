@@ -95,5 +95,33 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
   },
+  alertContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    right: 0,
+    padding: 10,
+    zIndex: 999,
+    alignItems: 'center',
+  },
+  alert: {
+    backgroundColor: '#f8d7da',
+    padding: 15,
+    borderRadius: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  alertText: {
+    color: '#721c24',
+    marginRight: 10,
+  },
+  alertCloseButton: {
+    backgroundColor: '#721c24',
+    padding: 5,
+    borderRadius: 50,
+  },  
+  icon: {
+    marginRight: 10,
+  },
 });
 

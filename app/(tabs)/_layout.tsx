@@ -69,19 +69,22 @@ export default function TabLayout() {
           ),
           headerRight: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-              <Link href={'/search'}>
-                <Ionicons name="search" size={24} color="#000" style={{ marginRight: 15 }} />
-              </Link>
               <Link href={'/(tabs)/streak'}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
                   <Ionicons name="flame" size={24} color="#ff4500" />
-                  <Text style={{ marginLeft: 5, fontSize: 16, color: '#000', fontWeight: 'bold' }}>
-                    {currentStreak}
+                  <Text style={{ marginLeft: 5, fontSize: 16, color: '#ff4500', fontWeight: 'bold' }}>
+                    {data?.current_streak}
                   </Text>
                 </View>
               </Link>
+              <Link href={'/profile'}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="person-circle-outline" size={24} color="#000" />
+                </View>
+              </Link>
             </View>
-          ),
+          )
+          ,
         }}
       >
         <Tabs.Screen
