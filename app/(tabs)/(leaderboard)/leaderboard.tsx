@@ -27,6 +27,7 @@ const Leaderboard = () => {
             if (id) {
                 const response = await apiClient.get(`/api-auth/${id}/`);
                 setUserData(response.data);
+                console.log('leaderboard user data', response.data);
             }
         };
         fetchUserData();
