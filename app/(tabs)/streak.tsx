@@ -18,6 +18,7 @@ export default function StreakScreen(): JSX.Element {
           if (id) {
             const response = await apiClient.get(`/api-auth/${id}/`)
             setData(response.data)
+            console.log('streak data', response.data)
           } else {
             throw new Error('ID not found')
           }
