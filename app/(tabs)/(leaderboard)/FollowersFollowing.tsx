@@ -33,8 +33,7 @@ export default function FollowersFollowing() {
         setLoading(false);
       }
     })();
-  }, [currentUserId, activeTab]); // Refetch data when activeTab changes
-  
+  }, [currentUserId, activeTab]);
 
   useEffect(() => {
     const list = data[activeTab] || [];
@@ -42,7 +41,7 @@ export default function FollowersFollowing() {
       list.filter((item: any) => (activeTab === 'followers' ? item.follower : item.following).username.toLowerCase().includes(searchQuery.toLowerCase()))
     );
   }, [searchQuery, activeTab, data]);
-  
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -51,18 +50,23 @@ export default function FollowersFollowing() {
     );
   }
 
-  if (error) return <Text>خطأ: {error}</Text>;
+  if (error) return <Text>Error: {error}</Text>;
 
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
         {['followers', 'following'].map((tab: any) => (
           <TouchableOpacity key={tab} onPress={() => setActiveTab(tab)}>
-            <Text style={{ fontWeight: activeTab === tab ? 'bold' : 'normal' }}>{tab === 'followers' ? 'المتابِعون' : 'المتابَعون'}</Text>
+            <Text style={{ fontWeight: activeTab === tab ? 'bold' : 'normal' }}>{tab === 'followers' ? 'Followers' : 'Following'}</Text>
           </TouchableOpacity>
         ))}
       </View>
-      <TextInput style={styles.searchBar} placeholder="ابحث عن اسم المستخدم..." value={searchQuery} onChangeText={setSearchQuery} />
+      <TextInput 
+        style={styles.searchBar} 
+        placeholder="Search by username..." 
+        value={searchQuery} 
+        onChangeText={setSearchQuery} 
+      />
       <FlatList
         data={filteredData}
         keyExtractor={(item: any) => (activeTab === 'followers' ? item.follower.id : item.following.id).toString()}
@@ -70,8 +74,8 @@ export default function FollowersFollowing() {
           const user = activeTab === 'followers' ? item.follower : item.following;
           return (
             <View style={styles.item}>
-              <Text style={styles.username}>{user.username || 'اسم المستخدم غير متوفر'}</Text>
-              <Text style={styles.email}>{user.email || 'لا يوجد بريد إلكتروني'}</Text>
+              <Text style={styles.username}>{user.username || 'Username not available'}</Text>
+              <Text style={styles.email}>{user.email || 'No email available'}</Text>
             </View>
           );
         }}
@@ -83,13 +87,13 @@ export default function FollowersFollowing() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#E0F7FA', padding: 20 },
   tabContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 },
-  searchBar: { height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 10, paddingHorizontal: 10, marginBottom: 15, backgroundColor: '#fff', textAlign: 'right', writingDirection: 'rtl' },
+  searchBar: { height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 10, paddingHorizontal: 10, marginBottom: 15, backgroundColor: '#fff' },
   item: { padding: 10, borderBottomWidth: 1, borderColor: '#ccc' },
-  username: { textAlign: 'right', writingDirection: 'rtl', fontSize: 16, fontWeight: 'bold' },
+  username: { fontSize: 16, fontWeight: 'bold' },
   email: { color: '#666' },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },  
+  },
 });

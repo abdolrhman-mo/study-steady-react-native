@@ -123,5 +123,10 @@ export const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },  
 });
 

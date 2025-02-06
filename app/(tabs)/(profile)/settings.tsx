@@ -1,6 +1,6 @@
 import { useLogout } from '@/api/hooks/useAuth'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { getId, getToken } from '@/utils/tokenStorage'
 import { router } from 'expo-router'
 import apiClient from '@/api/client'
@@ -38,16 +38,22 @@ const Profile = () => {
     fetchData()
   }, [])
 
-  if (loading) return <Text>جاري التحميل...</Text>
-  if (error) return <Text>حدث خطأ: {error}</Text>
-  if (!data) return <Text>لا توجد بيانات.</Text>
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#2196F3" />
+      </View>
+    )
+  }
+  if (error) return <Text style={styles.errorText}>Error: {error}</Text>
+  if (!data) return <Text style={styles.errorText}>No data available.</Text>
 
   const handleLogout = async () => {
     logoutUser()
-    console.log('الملف الشخصي: تم تسجيل الخروج')
+    console.log('Profile: Logged out')
 
     const token = await getToken()
-    console.log('ملف التعريف الرمز:', token)
+    console.log('Profile token:', token)
 
     router.replace('/login')
   }
@@ -58,11 +64,11 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.streak}>هنا يمكنك تسجيل الخروج.</Text>
+      <Text style={styles.streak}>Here you can log out.</Text>
 
       {/* Button wrapped in TouchableOpacity */}
       <TouchableOpacity style={styles.buttonLogout} onPress={confirmLogout}>
-        <Text style={styles.textStyle}>تسجيل الخروج</Text>
+        <Text style={styles.textStyle}>Log Out</Text>
       </TouchableOpacity>
 
       <Modal
@@ -73,13 +79,13 @@ const Profile = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>هل أنت متأكد أنك تريد تسجيل الخروج؟</Text>
+            <Text style={styles.modalText}>Are you sure you want to log out?</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, styles.buttonCancel]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>إلغاء</Text>
+                <Text style={styles.textStyle}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.buttonLogout]}
@@ -88,7 +94,7 @@ const Profile = () => {
                   handleLogout()
                 }}
               >
-                <Text style={styles.textStyle}>تسجيل الخروج</Text>
+                <Text style={styles.textStyle}>Log Out</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -164,6 +170,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0f7fa',
+  },
+  errorText: {
+    textAlign: 'center',
+    color: '#f44336',
+    fontSize: 18,
   },
 })
 

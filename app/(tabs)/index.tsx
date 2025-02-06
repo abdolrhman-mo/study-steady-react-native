@@ -8,7 +8,6 @@ import { API_ENDPOINTS } from '@/api/endpoints';
 import { getId } from '@/utils/tokenStorage'
 import apiClient from '@/api/client'
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 import { setCurrentStreak, setTopStreak, updateCurrentStreak } from '@/redux/streakSlice';
 
 
@@ -170,138 +169,135 @@ export default function PomodoroTimer(): JSX.Element {
 
     // Alert component to show when streak is zero
     const renderStreakAlert = () => {
-        // console.log(userData);
-        
-        // if (streak === 0 && userData.top_streak === 0 && userData.top_streak === 0) {
-        if (streak === 0 ) {
-            return (
-                <View style={styles.alertContainer}>
-                    <View style={styles.alert}>
-                        <Text style={styles.alertText}>ابدأ تايمر وذاكر عشان يبدأ ستريك </Text>
-                        <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
-                        <TouchableOpacity
-                            style={styles.alertCloseButton}
-                            onPress={() => setStreak(1)} // Dismiss alert by updating streak
-                        >
-                            <Icon name="close" size={20} color="#fff" />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            );
+        if (streak === 0) {
+          return (
+            <View style={styles.alertContainer}>
+              <View style={styles.alert}>
+                <Text style={styles.alertText}>Start the timer and study to begin your streak!</Text>
+                <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
+                <TouchableOpacity
+                  style={styles.alertCloseButton}
+                  onPress={() => setStreak(1)}
+                >
+                  <Icon name="close" size={20} color="#fff" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )
         }
-        return null;
-    };
-
-    return (
+        return null
+      }
+    
+      return (
         <View style={styles.container}>
-            {renderStreakAlert()}
-            <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
-            <View style={styles.buttonsContainer}>
-                <TouchableOpacity
-                    style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
-                    onPress={() => startTimer(0.05)}
-                    disabled={isRunning && !isPaused}
-                >
-                    <Icon name="timer-outline" size={20} color="#fff" />
-                    <Text style={styles.buttonText}>25 دقيقة</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
-                    onPress={() => startTimer(50)}
-                    disabled={isRunning && !isPaused}
-                >
-                    <Icon name="timer-outline" size={20} color="#fff" />
-                    <Text style={styles.buttonText}>50 دقيقة</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.controlButtonsContainer}>
-                {isRunning && !isPaused && (
-                    <TouchableOpacity
-                        style={styles.controlButton}
-                        onPress={pauseTimer}
-                    >
-                        <Icon name="pause-outline" size={20} color="#fff" />
-                        <Text style={styles.controlButtonText}>إيقاف مؤقت</Text>
-                    </TouchableOpacity>
-                )}
-                {isPaused && (
-                    <TouchableOpacity
-                        style={styles.controlButton}
-                        onPress={resumeTimer}
-                    >
-                        <Icon name="play-outline" size={20} color="#fff" />
-                        <Text style={styles.controlButtonText}>استئناف</Text>
-                    </TouchableOpacity>
-                )}
-            </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={handleCancel}
+          {renderStreakAlert()}
+          <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
+              onPress={() => startTimer(0.05)}
+              disabled={isRunning && !isPaused}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{isBreak ? "انتهت فترة الراحة!" : "الوقت انتهى!"}</Text>
-                        <View style={styles.modalButtonsContainer}>
-                            {isBreak ? (
-                                <>
-                                    <TouchableOpacity
-                                        style={styles.modalButton}
-                                        onPress={handleNewSession}
-                                    >
-                                        <Icon name="checkmark-outline" size={20} color="#fff" />
-                                        <Text style={styles.modalButtonText}>بدء جلسة جديدة</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={styles.modalButton}
-                                        onPress={handleCancel}
-                                    >
-                                        <Icon name="close-outline" size={20} color="#fff" />
-                                        <Text style={styles.modalButtonText}>إلغاء</Text>
-                                    </TouchableOpacity>
-                                </>
-                            ) : (
-                                <>
-                                    <TouchableOpacity
-                                        style={styles.modalButton}
-                                        onPress={handleBreak}
-                                    >
-                                        <Icon name="checkmark-outline" size={20} color="#fff" />
-                                        <Text style={styles.modalButtonText}>خذ استراحة</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={styles.modalButton}
-                                        onPress={handleCancel}
-                                    >
-                                        <Icon name="close-outline" size={20} color="#fff" />
-                                        <Text style={styles.modalButtonText}>إلغاء</Text>
-                                    </TouchableOpacity>
-                                </>
-                            )}
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={promptModalVisible}
-                onRequestClose={() => setPromptModalVisible(false)}
+              <Icon name="timer-outline" size={20} color="#fff" />
+              <Text style={styles.buttonText}>25 minutes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
+              onPress={() => startTimer(50)}
+              disabled={isRunning && !isPaused}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>من فضلك لا تخرج من البرنامج لكي لا يتوقف المؤقت.</Text>
-                        <TouchableOpacity
-                            style={styles.modalButton}
-                            onPress={() => setPromptModalVisible(false)}
-                        >
-                            <Icon name="close-outline" size={20} color="#fff" />
-                            <Text style={styles.modalButtonText}>موافق</Text>
-                        </TouchableOpacity>
-                    </View>
+              <Icon name="timer-outline" size={20} color="#fff" />
+              <Text style={styles.buttonText}>50 minutes</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.controlButtonsContainer}>
+            {isRunning && !isPaused && (
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={pauseTimer}
+              >
+                <Icon name="pause-outline" size={20} color="#fff" />
+                <Text style={styles.controlButtonText}>Pause</Text>
+              </TouchableOpacity>
+            )}
+            {isPaused && (
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={resumeTimer}
+              >
+                <Icon name="play-outline" size={20} color="#fff" />
+                <Text style={styles.controlButtonText}>Resume</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={handleCancel}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>{isBreak ? "Break over!" : "Time's up!"}</Text>
+                <View style={styles.modalButtonsContainer}>
+                  {isBreak ? (
+                    <>
+                      <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={handleNewSession}
+                      >
+                        <Icon name="checkmark-outline" size={20} color="#fff" />
+                        <Text style={styles.modalButtonText}>Start New Session</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={handleCancel}
+                      >
+                        <Icon name="close-outline" size={20} color="#fff" />
+                        <Text style={styles.modalButtonText}>Cancel</Text>
+                      </TouchableOpacity>
+                    </>
+                  ) : (
+                    <>
+                      <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={handleBreak}
+                      >
+                        <Icon name="checkmark-outline" size={20} color="#fff" />
+                        <Text style={styles.modalButtonText}>Take a Break</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={handleCancel}
+                      >
+                        <Icon name="close-outline" size={20} color="#fff" />
+                        <Text style={styles.modalButtonText}>Cancel</Text>
+                      </TouchableOpacity>
+                    </>
+                  )}
                 </View>
-            </Modal>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={promptModalVisible}
+            onRequestClose={() => setPromptModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Please don't leave the app to prevent the timer from stopping.</Text>
+                <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={() => setPromptModalVisible(false)}
+                >
+                  <Icon name="close-outline" size={20} color="#fff" />
+                  <Text style={styles.modalButtonText}>Okay</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </View>
-    );
+      )
 }

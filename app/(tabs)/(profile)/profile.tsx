@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { getId } from '@/utils/tokenStorage'
 import { router } from 'expo-router'
 import apiClient from '@/api/client'
@@ -30,9 +30,16 @@ const Profile = () => {
     fetchData()
   }, [])
 
-  if (loading) return <Text>جاري التحميل...</Text>
-  if (error) return <Text>حدث خطأ: {error}</Text>
-  if (!data) return <Text>لا توجد بيانات.</Text>
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#2196F3" />
+      </View>
+    )
+  }
+
+  if (error) return <Text style={styles.errorText}>Error: {error}</Text> // Translated
+  if (!data) return <Text style={styles.errorText}>No data available.</Text> // Translated
 
   return (
     <View style={styles.container}>
@@ -46,11 +53,11 @@ const Profile = () => {
       <View style={styles.streakInfo}>
         <View style={styles.streakRow}>
           <Icon name="flame" size={20} color="#ff5722" style={styles.icon} />
-          <Text style={styles.streak}>streak: {data.current_streak}</Text>
+          <Text style={styles.streak}>Streak: {data.current_streak}</Text> {/* Translated */}
         </View>
         <View style={styles.streakRow}>
           <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
-          <Text style={styles.streak}>top streak: {data.top_streak}</Text>
+          <Text style={styles.streak}>Top Streak: {data.top_streak}</Text> {/* Translated */}
         </View>
       </View>
 
@@ -58,7 +65,7 @@ const Profile = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => router.push('/settings')}>
           <Icon name="settings" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>إعدادات الحساب</Text>
+          <Text style={styles.buttonText}>Account Settings</Text> {/* Translated */}
         </TouchableOpacity>
       </View>
     </View>
@@ -119,6 +126,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0f7fa',
+  },
+  errorText: {
+    textAlign: 'center',
+    color: '#f44336',
+    fontSize: 18,
   },
 })
 

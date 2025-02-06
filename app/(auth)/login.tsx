@@ -8,7 +8,6 @@ import { useLogin } from '@/api/hooks/useAuth'
 import { Ionicons } from '@expo/vector-icons' // Import icons
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
 export default function LoginScreen() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -31,13 +30,12 @@ export default function LoginScreen() {
             router.replace(onboardingCompleted ? '/' : '/onboarding')
         }
     }
-    
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>تسجيل الدخول</Text>
+            <Text style={styles.title}>Login</Text>
             <InputField
-                placeholder="اسم المستخدم"
+                placeholder="Username"
                 value={username}
                 onChangeText={setUsername}
                 style={styles.inputField}
@@ -46,7 +44,7 @@ export default function LoginScreen() {
             
             <View style={styles.passwordContainer}>
                 <InputField
-                    placeholder="كلمة المرور"
+                    placeholder="Password"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword} // Toggle visibility
@@ -57,9 +55,9 @@ export default function LoginScreen() {
                 </TouchableOpacity>
             </View>
             {errors.password && <Text style={styles.error}>{errors.password}</Text>}
-            <Button title={loading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'} onPress={handleLogin} disabled={loading} />
+            <Button title={loading ? 'Logging in...' : 'Login'} onPress={handleLogin} disabled={loading} />
             {error?.detail && <Text style={styles.error}>{error.detail}</Text>}
-            <Link href="/signup" style={styles.link}>لا تملك حساب؟ سجل الآن</Link>
+            <Link href="/signup" style={styles.link}>Don't have an account? Sign up now</Link>
         </View>
     )
 }

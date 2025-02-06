@@ -40,28 +40,35 @@ const Leaderboard = () => {
         }
     }, [data, dispatch]);
 
-    if (loading) return <ActivityIndicator size="large" color="#00796b" />;
+    if (loading) {
+        return (
+        <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#E87C39" />
+        </View>
+        );
+    }
+  
     if (error)
         return (
             <View style={styles.center}>
-                <Text style={styles.errorText}>خطأ: {error}</Text>
-            </View>
-        );
-        const renderItem = ({ item }: { item: any }) => (
-            <View style={styles.item}>
-                <Link
-                    href={{ pathname: '/user/[id]', params: { id: item.id } }}
-                    style={styles.link}
-                >
-                    <Text style={styles.name}>{item.username}</Text>
-                </Link>
-                <View style={styles.streakContainer}>
-                    <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
-                    <Text style={styles.score}>{item.top_streak}</Text>
-                </View>
+                <Text style={styles.errorText}>Error: {error}</Text>
             </View>
         );
         
+    const renderItem = ({ item }: { item: any }) => (
+        <View style={styles.item}>
+            <Link
+                href={{ pathname: '/user/[id]', params: { id: item.id } }}
+                style={styles.link}
+            >
+                <Text style={styles.name}>{item.username}</Text>
+            </Link>
+            <View style={styles.streakContainer}>
+                <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
+                <Text style={styles.score}>{item.top_streak}</Text>
+            </View>
+        </View>
+    );
 
     const filteredList = followingList?.filter((user: any) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
@@ -72,7 +79,7 @@ const Leaderboard = () => {
             {/* Search Bar */}
             <TextInput
                 style={styles.searchBar}
-                placeholder="ابحث عن أصدقائك"
+                placeholder="Search for friends"
                 value={searchQuery}
                 onChangeText={setSearchQuery}
             />
@@ -85,15 +92,13 @@ const Leaderboard = () => {
                         <Text style={styles.infoText}>{userData.username}</Text>
                     </View>
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')} >
-                        <Text style={styles.infoLabel}>المتابِعون</Text>
+                        <Text style={styles.infoLabel}>Followers</Text>
                         <Text style={styles.infoText}>25</Text>
-                        {/* <Text style={styles.infoText}>{userData.followers_count}</Text> */}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
-                        <Text style={styles.infoLabel}>المتابَعون</Text>
+                        <Text style={styles.infoLabel}>Following</Text>
                         <Text style={styles.infoText}>10</Text>
-                        {/* <Text style={styles.infoText}>{userData.following_count}</Text> */}
                     </TouchableOpacity>
                 </View>
             )}
@@ -108,10 +113,10 @@ const Leaderboard = () => {
             ) : (
                 <View style={styles.center}>
                     <Text style={styles.noFollowingMessage}>
-                        لم تتابع أي شخص بعد. ابدأ في متابعة المستخدمين لرؤية درجاتهم هنا!
+                        You haven't followed anyone yet. Start following users to see their scores here!
                     </Text>
                     <Link href={'/search'}>
-                        <Button title="ابحث عن أصدقاء لمتابعتهم" />
+                        <Button title="Search for friends to follow" />
                     </Link>
                 </View>
             )}
@@ -142,9 +147,6 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 10,
         marginBottom: 20,
-        // borderStyle: 'solid',
-        // borderWidth: 1,
-        // borderColor: '#ccc',
     },
     infoBlock: {
         alignItems: 'center',
@@ -198,6 +200,11 @@ const styles = StyleSheet.create({
     },
     trophyIcon: {
         marginRight: 5, // Adds space between the trophy and the score
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 

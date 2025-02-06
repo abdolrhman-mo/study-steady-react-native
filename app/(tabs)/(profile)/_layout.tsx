@@ -14,13 +14,13 @@ export default function Layout() {
             <Stack.Screen 
                 name="profile"
                 options={{
-                    title: "الملف الشخصي",
+                    title: "Profile", // Translated to English
                 }} 
             />
             <Stack.Screen 
                 name="settings" 
                 options={{
-                    title: "الإعدادات",
+                    title: "Settings", // Translated to English
                 }}
             />
         </Stack>

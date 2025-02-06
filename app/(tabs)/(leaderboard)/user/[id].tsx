@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { getId } from '@/utils/tokenStorage'
 import apiClient from '@/api/client'
 import { API_ENDPOINTS } from '@/api/endpoints'
@@ -80,14 +80,19 @@ const User = () => {
     }
   }
 
-  if (loading) return <Text>جاري التحميل...</Text>
-  if (error) return <Text>خطأ: {error}</Text>
-  if (!userData) return <Text>لا توجد بيانات.</Text>
+  if (loading) return (
+    <View style={styles.loaderContainer}>
+      <ActivityIndicator size="large" />
+    </View>
+  )
+
+  if (error) return <Text>Error: {error}</Text>
+  if (!userData) return <Text>No data available.</Text>
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{userData.username}</Text>
-      <Text style={styles.streak}>أفضل سلسلة: {userData.top_streak}</Text>
+      <Text style={styles.streak}>Top Streak: {userData.top_streak}</Text>
       <TouchableOpacity
         style={following ? styles.unfollowButton : styles.followButton}
         onPress={handleFollowToggle}
@@ -95,10 +100,10 @@ const User = () => {
       >
         <Text style={styles.buttonText}>
           {isProcessing
-            ? 'جاري المعالجة...' // Show "Processing..." text when the action is in progress
+            ? 'Processing...' // Show "Processing..." text when the action is in progress
             : following
-            ? 'إلغاء المتابعة'
-            : 'متابعة'}
+            ? 'Unfollow'
+            : 'Follow'}
         </Text>
       </TouchableOpacity>
     </View>
@@ -138,6 +143,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

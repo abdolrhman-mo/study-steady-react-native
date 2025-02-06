@@ -8,7 +8,6 @@ import { useSignup } from '@/api/hooks/useAuth'
 import { Ionicons } from '@expo/vector-icons' // Import icons
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
 export default function SignupScreen() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -27,23 +26,22 @@ export default function SignupScreen() {
 
     const result = await performSignup(username, password)
     if (result) {
-        console.log('Signup successful:', result)
-        await AsyncStorage.setItem('onboardingCompleted', 'false') // Ensure onboarding shows
+        // console.log('Signup successful:', result)
+        // await AsyncStorage.setItem('onboardingCompleted', 'false') // Ensure onboarding shows
         router.replace('/onboarding')
     }
 }
 
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>إنشاء حساب</Text>
+      <Text style={styles.title}>Create an Account</Text>
 
-      <InputField placeholder="اسم المستخدم" value={username} onChangeText={setUsername} />
+      <InputField placeholder="Username" value={username} onChangeText={setUsername} />
       {errors.username && <Text style={styles.error}>{errors.username}</Text>}
 
       <View style={styles.passwordContainer}>
         <InputField
-          placeholder="كلمة المرور"
+          placeholder="Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword} // Toggle visibility
@@ -56,11 +54,11 @@ export default function SignupScreen() {
 
       {errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
-      <Button title={loading ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب'} onPress={handleSignup} disabled={loading} />
+      <Button title={loading ? 'Creating Account...' : 'Create Account'} onPress={handleSignup} disabled={loading} />
       {error?.username && <Text style={styles.error}>{error.username[0]}</Text>}
 
       <Link href="/login" style={styles.link}>
-        لديك حساب بالفعل؟ سجل الدخول
+        Already have an account? Login
       </Link>
     </View>
   )

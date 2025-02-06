@@ -14,25 +14,25 @@ interface Slide {
 const { width, height } = Dimensions.get('window')
 
 const slides: Slide[] = [
-  {
-    key: '1',
-    title: 'مرحبًا بك في التطبيق!',
-    text: 'تصفح المنتجات بسهولة واشتري ما تريد بنقرة زر.',
-    image: require('../assets/images/onboarding/onboarding1.png'),
-  },
-  {
-    key: '2',
-    title: 'سهولة الدفع',
-    text: 'طرق دفع آمنة وسريعة لضمان تجربة شراء ممتعة.',
-    image: require('../assets/images/onboarding/onboarding2.png'),
-  },
-  {
-    key: '3',
-    title: 'توصيل سريع',
-    text: 'سنقوم بتوصيل طلبك بسرعة وأمان حتى باب منزلك.',
-    image: require('../assets/images/onboarding/onboarding3.png'),
-  },
-]
+    {
+      key: '1',
+      title: 'Welcome to the App!',
+      text: 'Browse products easily and buy what you want with a click of a button.',
+      image: require('../assets/images/onboarding/onboarding1.png'),
+    },
+    {
+      key: '2',
+      title: 'Easy Payment',
+      text: 'Safe and fast payment methods to ensure an enjoyable shopping experience.',
+      image: require('../assets/images/onboarding/onboarding2.png'),
+    },
+    {
+      key: '3',
+      title: 'Fast Delivery',
+      text: 'We will deliver your order quickly and safely to your doorstep.',
+      image: require('../assets/images/onboarding/onboarding3.png'),
+    },
+  ]
 
 export default function OnboardingScreen() {
   const [showHome, setShowHome] = useState<boolean>(false)

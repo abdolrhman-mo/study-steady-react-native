@@ -32,24 +32,30 @@ const SearchFriends = () => {
         });
     }, [navigation]);
 
-    if (loading) return <ActivityIndicator size="large" />;
-    if (error) return <Text>خطأ: {error}</Text>;
+    if (loading) {
+        return (
+        <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#E87C39" />
+        </View>
+        );
+    }
+    if (error) return <Text style={styles.errorText}>Error: {error}</Text>;
 
     return (
         <View style={styles.container}>
             <View style={styles.customHeader}>
                 <TextInput
                     style={styles.searchInput}
-                    placeholder="ابحث عن الأصدقاء..."
+                    placeholder="Search for friends..."
                     value={searchQuery}
                     onChangeText={handleSearch}
                 />
             </View>
             <FlatList
                 data={filteredFriends}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {setSearchQuery(''); setFilteredFriends(null);}} >
+                    <TouchableOpacity onPress={() => {setSearchQuery(''); setFilteredFriends([]);}} >
                         <Link
                             href={{
                                 pathname: '/user/[id]',
@@ -66,7 +72,7 @@ const SearchFriends = () => {
             {/* Add the Link to /leaderboard at the bottom */}
             <Link href="/leaderboard" asChild>
                 <TouchableOpacity style={styles.leaderboardLink}>
-                    <Text style={styles.leaderboardText}>الذهاب إلى لوحة المتصدرين</Text>
+                    <Text style={styles.leaderboardText}>Go to Leaderboard</Text>
                 </TouchableOpacity>
             </Link>
         </View>
@@ -107,6 +113,17 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#d32f2f',
+        textAlign: 'center',
+        marginTop: 20,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 

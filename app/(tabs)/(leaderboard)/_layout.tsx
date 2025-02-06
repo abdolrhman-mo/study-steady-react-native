@@ -1,4 +1,6 @@
 import { Stack } from 'expo-router';
+import React from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 export default function Layout() {
     return (
@@ -7,37 +9,44 @@ export default function Layout() {
                 headerStyle: {
                     backgroundColor: '#e0f7fa',
                 },
-                // headerTintColor: '#fff',
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-        }}>
-            <Stack.Screen 
+            }}
+        >
+            <Stack.Screen
                 name="leaderboard"
                 options={{
-                    title: "المتابعة",
+                    title: "Leaderboard",
                     headerShown: false, // This hides the header bar
-                }} 
-            />
-            <Stack.Screen 
-                name="search" 
-                options={{
-                    title: "البحث",
                 }}
             />
-            <Stack.Screen 
-                name="FollowersFollowing" 
+            <Stack.Screen
+                name="search"
                 options={{
-                    title: "علاقاتك العامة",
-                    // headerShown: false, // This hides the header bar
+                    title: "Search",
                 }}
             />
-            <Stack.Screen 
+            <Stack.Screen
+                name="FollowersFollowing"
+                options={{
+                    title: "Your Connections",
+                }}
+            />
+            <Stack.Screen
                 name="user/[id]"
                 options={{
-                    title: "الملف الشخصي للمستخدم",
+                    title: "User Profile",
                 }}
             />
         </Stack>
     );
 }
+
+const styles = StyleSheet.create({
+    loaderContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
