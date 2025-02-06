@@ -7,6 +7,9 @@ import { styles } from '@/components/timer/timer.styles';
 import { API_ENDPOINTS } from '@/api/endpoints';
 import { getId } from '@/utils/tokenStorage'
 import apiClient from '@/api/client'
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { setCurrentStreak, setTopStreak, updateCurrentStreak } from '@/redux/streakSlice';
 
 
 export default function PomodoroTimer(): JSX.Element {
@@ -19,39 +22,42 @@ export default function PomodoroTimer(): JSX.Element {
     const [promptModalVisible, setPromptModalVisible] = useState<boolean>(false);
     const [duration, setDuration] = useState<number>(0);
     const [isBreak, setIsBreak] = useState<boolean>(false);
-    const [streak, setStreak] = useState<number>(1);  // Track streak
-    const { data, loading, error, postDataToServer } = usePostData(API_ENDPOINTS.SESSION);
+    const [streak, setStreak] = useState<number>(1);
+    const { data: saveSessionRes, loading: saveSessionLoading, error: saveSessionError, postDataToServer } = usePostData(API_ENDPOINTS.SESSION);
 
+    const dispatch = useDispatch()
 
     const [userData, setUserData] = useState<any>(null)
     const [userLoading, setUserLoading] = useState<boolean>(true)
     const [userError, setUserError] = useState<string | null>(null)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const id = await getId()
-        if (id) {
-          const response = await apiClient.get(`/api-auth/${id}/`)
-          setUserData(response.data)
-          console.log("From fetchData")
-          
-          if (response.data.current_streak === 0 && response.data.top_streak === 0) {
-            setStreak(0)
-            console.log(streak)
-          }
-        } else {
-          throw new Error('ID not found')
-        }
-      } catch (err: any) {
-        setUserError(err.message)
-      } finally {
-        setUserLoading(false)
-      }
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const id = await getId()
+            if (id) {
+                const response = await apiClient.get(`/api-auth/${id}/`)
+                setUserData(response.data)
 
-    fetchData()
-  }, [])
+                dispatch(setCurrentStreak(Number(response.data.current_streak)))
+                dispatch(setTopStreak(Number(response.data.top_streak)))
+                
+                if (response.data.current_streak === 0 && response.data.top_streak === 0) {
+                    setStreak(0)
+                    console.log(streak)
+                }
+            } else {
+                throw new Error('ID not found')
+            }
+        } catch (err: any) {
+            setUserError(err.message)
+        } finally {
+            setUserLoading(false)
+        }
+        }
+
+        fetchData()
+    }, [])
 
 //   if (userLoading) return <Text>جاري التحميل...</Text>
 //   if (userError) return <Text>حدث خطأ: {userError}</Text>
@@ -72,10 +78,19 @@ export default function PomodoroTimer(): JSX.Element {
             }
         }
     }, [timeLeft]);
-
+    
     const saveSessionData = async (duration: number): Promise<void> => {
         await postDataToServer({ duration: 25 });
+        // await postDataToServer({ duration });
     };
+    
+    useEffect(() => {
+        // Global State Streak
+        if (!saveSessionLoading && saveSessionRes) {
+            console.log('session saved res', saveSessionRes.current_streak);
+            dispatch(updateCurrentStreak(saveSessionRes.current_streak))
+        }
+    }, [saveSessionRes, saveSessionLoading])
 
     const startTimer = (minutes: number, breakTime: boolean = false): void => {
         if (intervalId) {

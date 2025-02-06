@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import followingReducer from './followingSlice';
+import streakReducer from './streakSlice'
 
 export const store = configureStore({
     reducer: {
         following: followingReducer,
+        streak: streakReducer,
     },
 });
 

@@ -4,6 +4,9 @@ import { View, Text, Image } from 'react-native'
 import { getId } from '@/utils/tokenStorage'
 import { useEffect, useState } from 'react'
 import apiClient from '@/api/client'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
+import { setCurrentStreak } from '@/redux/streakSlice'
 
 
 const hasOneDayPassed = (apiDateString: string) => {
@@ -20,8 +23,11 @@ const hasOneDayPassed = (apiDateString: string) => {
 }
 
 export default function TabLayout() {
+    const dispatch = useDispatch()
+    const currentStreak = useSelector((state: RootState) => state.streak.currentStreak)
+
   const [data, setData] = useState<any>(null)
-  const [currentStreak, setCurrentStreak] = useState<any>(null)
+//   const [currentStreak, setCurrentStreak] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [endpoint, setEndpoint] = useState<string>('')
@@ -37,7 +43,9 @@ export default function TabLayout() {
 
           const response = await apiClient.get(dynamicEndpoint)
           setData(response.data)
-          setCurrentStreak(response.data.current_streak)
+
+          // Global State Current streak
+          dispatch(setCurrentStreak(response.data.current_streak))
         } else {
           throw new Error('ID not found')
         }
@@ -73,7 +81,8 @@ export default function TabLayout() {
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
                   <Ionicons name="flame" size={24} color="#ff4500" />
                   <Text style={{ marginLeft: 5, fontSize: 16, color: '#ff4500', fontWeight: 'bold' }}>
-                    {data?.current_streak}
+                    {/* {data?.current_streak} */}
+                    {currentStreak}
                   </Text>
                 </View>
               </Link>

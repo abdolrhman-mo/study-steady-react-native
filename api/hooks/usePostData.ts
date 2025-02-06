@@ -12,7 +12,7 @@ export const usePostData = (endpoint: string) => {
             console.log('Sending POST request to:', endpoint);
             console.log('Payload:', postData);
             const response = await apiClient.post(endpoint, postData);
-            console.log('Response:', response.data);
+            console.log('usePostData Response:', response.data);
             setData(response.data);
         } catch (err: any) {
             console.error('Error during POST request:', err.response || err.message);

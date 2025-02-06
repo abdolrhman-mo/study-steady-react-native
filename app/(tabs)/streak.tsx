@@ -3,10 +3,15 @@ import { Text, View, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getId } from '@/utils/tokenStorage'
 import apiClient from '@/api/client'
-import { usePostData } from '@/api/hooks/usePostData';
-import { API_ENDPOINTS } from '@/api/endpoints';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { setCurrentStreak, setTopStreak } from '@/redux/streakSlice';
 
 export default function StreakScreen(): JSX.Element {
+    const dispatch = useDispatch()
+    const currentStreak = useSelector((state: RootState) => state.streak.currentStreak)
+    const topStreak = useSelector((state: RootState) => state.streak.topStreak)
+
     const [data, setData] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
@@ -18,7 +23,9 @@ export default function StreakScreen(): JSX.Element {
           if (id) {
             const response = await apiClient.get(`/api-auth/${id}/`)
             setData(response.data)
-            console.log('streak data', response.data)
+            
+            dispatch(setCurrentStreak(response.data.current_streak))
+            dispatch(setTopStreak(response.data.top_streak))
           } else {
             throw new Error('ID not found')
           }
@@ -43,10 +50,10 @@ export default function StreakScreen(): JSX.Element {
             </View>
             <View style={{ paddingHorizontal: 20, alignItems: 'center' }}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#333', marginBottom: 10 }}>
-                    Current Streak: {data.current_streak} days
+                    Current Streak: {currentStreak} days
                 </Text>
                 <Text style={{ fontSize: 18, color: '#555', marginBottom: 10 }}>
-                    Top Streak: {data.top_streak} days
+                    Top Streak: {topStreak} days
                 </Text>
                 <Text style={{ fontSize: 18, color: '#555' }}>
                     Total Study Hours: 54 hours
