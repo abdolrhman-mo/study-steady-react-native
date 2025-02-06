@@ -59,3 +59,11 @@ export const deleteId = async (): Promise<void> => {
         await SecureStore.deleteItemAsync('ID');
     }
 };
+
+// export const deleteOnboardingCompleted = async (): Promise<void> => {
+//     if (isWeb) {
+//         await AsyncStorage.removeItem('ID');
+//     } else {
+//         await SecureStore.deleteItemAsync('ID');
+//     }
+// };

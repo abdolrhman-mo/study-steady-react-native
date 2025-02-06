@@ -34,6 +34,7 @@ export default function RootLayout() {
                 <Stack.Screen name="/" />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 {/* <Stack.Screen name="streak" options={{ headerShown: true, headerTitle: 'Streak' }} /> */}
+                <Stack.Screen name='(auth)/onboarding'  options={{ headerShown: false }}  />
                 <Stack.Screen name='+not-found' />
             </Stack>
         </Provider>

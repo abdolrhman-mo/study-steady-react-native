@@ -6,6 +6,8 @@ import { validatePassword, validateUsername } from '../../utils/validation'
 import { Link, router } from 'expo-router'
 import { useLogin } from '@/api/hooks/useAuth'
 import { Ionicons } from '@expo/vector-icons' // Import icons
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 export default function LoginScreen() {
     const [username, setUsername] = useState('')
@@ -17,17 +19,19 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         const usernameError = validateUsername(username)
         const passwordError = false
-
+    
         if (usernameError || passwordError) {
             setErrors({ username: usernameError || '', password: passwordError || '' })
             return
         }
-
+    
         const result = await performLogin(username, password)
         if (result) {
-            router.replace('/')
+            const onboardingCompleted = await AsyncStorage.getItem('onboardingCompleted')
+            router.replace(onboardingCompleted ? '/' : '/onboarding')
         }
     }
+    
 
     return (
         <View style={styles.container}>
