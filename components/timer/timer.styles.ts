@@ -14,10 +14,11 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   timer: {
-    fontSize: 48,
-    fontWeight: 'bold',
+    fontSize: 55,
+    fontWeight: '500',
     // marginBottom: 20,
-    color: '#E87C39',
+    // color: '#E87C39',
+    color: '#000',
     // Progress circle styles
     position: 'absolute',
     // fontSize: 24,

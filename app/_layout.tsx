@@ -3,12 +3,11 @@ import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
-import { View, ActivityIndicator, StyleSheet } from 'react-native'; // Added import for ActivityIndicator
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, ActivityIndicator } from 'react-native';
 
 export default function RootLayout() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true); // Added state to handle loading
+    const [loading, setLoading] = useState(true);
 
     const router = useRouter();
 
@@ -17,23 +16,12 @@ export default function RootLayout() {
             const token = await getToken();
             console.log('layout token:', token);
             setIsAuthenticated(!!token);
-            setLoading(false); // Set loading to false after authentication check
-            // if (!token) {
-            //     router.replace('/signup');
-            // }
-            // if (!token) {
-            //     requestAnimationFrame(() => {
-            //         router.replace('/signup');
-            //     });
-            // }
-            
+            setLoading(false); 
         };
 
         checkAuth();
     }, []);
     useEffect(() => {
-        // Redirect to the signup page if authentication check is complete and the user is not authenticated.
-        // This prevents navigation attempts before the root layout is mounted.
         if (!loading && !isAuthenticated) {
             router.replace('/signup');
         }

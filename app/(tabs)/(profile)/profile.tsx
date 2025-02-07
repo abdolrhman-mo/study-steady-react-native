@@ -5,7 +5,7 @@ import { router } from 'expo-router'
 import apiClient from '@/api/client'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS } from '@/constants/colors'
+import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors'
 
 
 const Profile = () => {
@@ -36,7 +36,7 @@ const Profile = () => {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#2196F3" />
+        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
       </View>
     )
   }
@@ -51,14 +51,14 @@ const Profile = () => {
     >
       {/* Profile Header */}
       <View style={styles.header}>
-        <Icon name="person-circle-outline" size={60} color="#2196F3" />
+        <Icon name="person-circle-outline" size={60} color={PRIMARY_COLOR} />
         <Text style={styles.title}>{data.username}</Text>
       </View>
 
       {/* Streak Info with Icons */}
       <View style={styles.streakInfo}>
         <View style={styles.streakRow}>
-          <Icon name="flame" size={20} color="#ff5722" style={styles.icon} />
+          <Icon name="flame" size={20} color={"#ff5722"} style={styles.icon} />
           <Text style={styles.streak}>Streak: {data.current_streak}</Text> {/* Translated */}
         </View>
         <View style={styles.streakRow}>
@@ -71,7 +71,7 @@ const Profile = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => router.push('/settings')}>
           <Icon name="settings" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>Account Settings</Text> {/* Translated */}
+          <Text style={styles.buttonText}>Settings</Text> {/* Translated */}
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    // backgroundColor: '#e0f7fa',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#2196F3',
+    color: PRIMARY_COLOR,
     marginLeft: 10,
   },
   streakInfo: {
@@ -122,10 +123,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
+    paddingHorizontal: 20,
     marginBottom: 15,
-    backgroundColor: '#2196F3',
+    backgroundColor: PRIMARY_COLOR,
     borderRadius: 30,
-    width: '70%',
     justifyContent: 'center',
   },
   buttonText: {
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0f7fa',
   },
   errorText: {
     textAlign: 'center',

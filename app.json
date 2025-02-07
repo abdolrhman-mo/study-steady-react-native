@@ -3,7 +3,7 @@
     "name": "Study Steady",
     "slug": "my-app",
     "runtimeVersion": {
-        "policy": "appVersion"
+      "policy": "appVersion"
     },
     "version": "1.0.0",
     "orientation": "portrait",
@@ -41,7 +41,8 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
