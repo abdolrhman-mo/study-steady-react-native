@@ -9,6 +9,7 @@ import { RootState } from '@/redux/store';
 import { setCurrentStreak } from '@/redux/streakSlice';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS } from '@/constants/colors';
+import AppText from '@/components/app-text';
 
 const hasOneDayPassed = (apiDateString: string) => {
   const apiDate = new Date(apiDateString); // Convert API string to Date object
@@ -64,8 +65,8 @@ export default function TabLayout() {
       <ActivityIndicator size="large" color="#E87C39" />
     </View>
   );
-  if (error) return <Text>Error: {error}</Text>;
-  if (!data) return <Text>No data available.</Text>;
+  if (error) return <AppText>Error: {error}</AppText>;
+  if (!data) return <AppText>No data available.</AppText>;
 
   return (
     <Tabs
@@ -84,9 +85,9 @@ export default function TabLayout() {
             <Link href={'/(tabs)/streak'}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
                 <Ionicons name="flame" size={24} color="#ff4500" />
-                <Text style={{ marginLeft: 5, fontSize: 16, color: '#ff4500', fontWeight: 'bold' }}>
+                <AppText style={{ marginLeft: 5, fontSize: 16, color: '#ff4500', fontWeight: 'bold' }}>
                   {currentStreak}
-                </Text>
+                </AppText>
               </View>
             </Link>
             <Link href={'/profile'}>

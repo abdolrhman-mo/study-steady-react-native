@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS } from '@/constants/colors';
+import AppText from '@/components/app-text';
 
 const Leaderboard = () => {
     const navigation = useNavigation();
@@ -53,7 +54,7 @@ const Leaderboard = () => {
     if (error)
         return (
             <View style={styles.center}>
-                <Text style={styles.errorText}>Error: {error}</Text>
+                <AppText style={styles.errorText}>Error: {error}</AppText>
             </View>
         );
         
@@ -63,20 +64,20 @@ const Leaderboard = () => {
     //             href={{ pathname: '/user/[id]', params: { id: item.id } }}
     //             style={styles.link}
     //         >
-    //             <Text style={styles.name}>{item.username}</Text>
+    //             <AppText style={styles.name}>{item.username}</AppText>
     //         </Link>
     //         <View style={styles.streakContainer}>
     //             <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
-    //             <Text style={styles.score}>{item.top_streak}</Text>
+    //             <AppText style={styles.score}>{item.top_streak}</AppText>
     //         </View>
     //     </View>
     // );
     const renderItem = ({ item }: { item: any }) => (
         <View style={styles.tableRow}>
-            <Text style={styles.rowText}>{item.username}</Text>
+            <AppText style={styles.rowText}>{item.username}</AppText>
             <View style={styles.streakContainer}>
                 <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
-                <Text style={styles.rowText}>{item.top_streak}</Text>
+                <AppText style={styles.rowText}>{item.top_streak}</AppText>
             </View>
         </View>
     );
@@ -102,15 +103,15 @@ const Leaderboard = () => {
                 <View style={styles.personalInfo}>
                     <View style={styles.infoBlock}>
                         <Icon name="person-circle-outline" size={50} color="#E87C39" />
-                        <Text style={styles.infoText}>{userData.username}</Text>
+                        <AppText style={styles.infoText}>{userData.username}</AppText>
                     </View>
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
-                        <Text style={styles.infoLabel}>Followers</Text>
-                        <Text style={styles.infoText}>25</Text>
+                        <AppText style={styles.infoLabel}>Followers</AppText>
+                        <AppText style={styles.infoText}>25</AppText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
-                        <Text style={styles.infoLabel}>Following</Text>
-                        <Text style={styles.infoText}>10</Text>
+                        <AppText style={styles.infoLabel}>Following</AppText>
+                        <AppText style={styles.infoText}>10</AppText>
                     </TouchableOpacity>
                 </View>
             )}
@@ -119,12 +120,12 @@ const Leaderboard = () => {
             {filteredList?.length > 0 ? (
                 // {/* Leaderboard Title */}
                 <>
-                    <Text style={styles.leaderboardTitle}>Following</Text>
+                    <AppText style={styles.leaderboardTitle}>Following</AppText>
             
                     {/* Table Header */}
                     <View style={styles.tableHeader}>
-                        <Text style={styles.headerText}>Username</Text>
-                        <Text style={styles.headerText}>Top Streak</Text>
+                        <AppText style={styles.headerText}>Username</AppText>
+                        <AppText style={styles.headerText}>Top Streak</AppText>
                     </View>
             
                     {/* Table Body */}
@@ -137,9 +138,9 @@ const Leaderboard = () => {
                 </>
             ) : (
                 <View style={styles.center}>
-                    <Text style={styles.noFollowingMessage} >
+                    <AppText style={styles.noFollowingMessage} >
                         You haven't followed anyone yet. Start following users to see their scores here!
-                    </Text>
+                    </AppText>
                     <Link href={'/search'}>
                         <Button title="Search for friends to follow" color={'#E87C39'}/>
                     </Link>

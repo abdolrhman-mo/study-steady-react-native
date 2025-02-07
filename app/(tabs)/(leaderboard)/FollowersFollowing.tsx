@@ -4,6 +4,7 @@ import apiClient from '@/api/client';
 import { getId } from '@/utils/tokenStorage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS } from '@/constants/colors';
+import AppText from '@/components/app-text';
 
 export default function FollowersFollowing() {
   const [data, setData] = useState({ followers: [], following: [] });
@@ -52,7 +53,7 @@ export default function FollowersFollowing() {
     );
   }
 
-  if (error) return <Text>Error: {error}</Text>;
+  if (error) return <AppText>Error: {error}</AppText>;
 
   return (
     <LinearGradient
@@ -62,7 +63,7 @@ export default function FollowersFollowing() {
       <View style={styles.tabContainer}>
         {['followers', 'following'].map((tab: any) => (
           <TouchableOpacity key={tab} onPress={() => setActiveTab(tab)}>
-            <Text style={{ fontWeight: activeTab === tab ? 'bold' : 'normal' }}>{tab === 'followers' ? 'Followers' : 'Following'}</Text>
+            <AppText style={{ fontWeight: activeTab === tab ? 'bold' : 'normal' }}>{tab === 'followers' ? 'Followers' : 'Following'}</AppText>
           </TouchableOpacity>
         ))}
       </View>
@@ -79,8 +80,8 @@ export default function FollowersFollowing() {
           const user = activeTab === 'followers' ? item.follower : item.following;
           return (
             <View style={styles.item}>
-              <Text style={styles.username}>{user.username || 'Username not available'}</Text>
-              <Text style={styles.email}>{user.email || 'No email available'}</Text>
+              <AppText style={styles.username}>{user.username || 'Username not available'}</AppText>
+              <AppText style={styles.email}>{user.email || 'No email available'}</AppText>
             </View>
           );
         }}

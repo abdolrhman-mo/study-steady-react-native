@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from '@/api/endpoints';
 import { useFetchData } from '@/api/hooks/useFetchData';
+import AppText from '@/components/app-text';
 import { GRADIENT_COLORS } from '@/constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useNavigation } from 'expo-router';
@@ -41,7 +42,7 @@ const SearchFriends = () => {
         </View>
         );
     }
-    if (error) return <Text style={styles.errorText}>Error: {error}</Text>;
+    if (error) return <AppText style={styles.errorText}>Error: {error}</AppText>;
 
     return (
         <LinearGradient
@@ -77,7 +78,7 @@ const SearchFriends = () => {
             {/* Add the Link to /leaderboard at the bottom */}
             <Link href="/leaderboard" asChild>
                 <TouchableOpacity style={styles.leaderboardLink}>
-                    <Text style={styles.leaderboardText}>Go to Leaderboard</Text>
+                    <AppText style={styles.leaderboardText}>Go to Leaderboard</AppText>
                 </TouchableOpacity>
             </Link>
         </LinearGradient>

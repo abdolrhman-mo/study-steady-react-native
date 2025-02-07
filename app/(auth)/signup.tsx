@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENT_COLORS } from '@/constants/colors'
+import AppText from '@/components/app-text'
 
 export default function SignupScreen() {
   const [firstName, setFirstName] = useState('')
@@ -39,20 +40,20 @@ export default function SignupScreen() {
         colors={GRADIENT_COLORS}
         style={styles.container}
     >
-      <Text style={styles.title}>Create an Account</Text>
+      <AppText style={styles.title}>Create an Account</AppText>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: '7px' }}>
         <View style={{ flex: 1 }}>
           <InputField placeholder="First Name" value={firstName} onChangeText={setFirstName} />
-          {errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
+          {errors.firstName && <AppText style={styles.error}>{errors.firstName}</AppText>}
         </View>
         <View style={{ flex: 1}}>
           <InputField placeholder="Last Name" value={lastName} onChangeText={setLastName} />
-          {errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
+          {errors.lastName && <AppText style={styles.error}>{errors.lastName}</AppText>}
         </View>
       </View>
 
       <InputField placeholder="Username" value={username} onChangeText={setUsername} />
-      {errors.username && <Text style={styles.error}>{errors.username}</Text>}
+      {errors.username && <AppText style={styles.error}>{errors.username}</AppText>}
 
       <View style={styles.passwordContainer}>
         <InputField
@@ -67,10 +68,10 @@ export default function SignupScreen() {
         </TouchableOpacity>
       </View>
 
-      {errors.password && <Text style={styles.error}>{errors.password}</Text>}
+      {errors.password && <AppText style={styles.error}>{errors.password}</AppText>}
 
       <Button title={loading ? 'Creating Account...' : 'Create Account'} onPress={handleSignup} disabled={loading} />
-      {errors?.username && <Text style={styles.error}>{errors.username[0]}</Text>}
+      {errors?.username && <AppText style={styles.error}>{errors.username[0]}</AppText>}
 
       <Link href="/login" style={styles.link}>
         Already have an account? Login

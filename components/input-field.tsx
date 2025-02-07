@@ -1,5 +1,6 @@
 import React from 'react'
 import { TextInput, StyleSheet, View, Text, TextInputProps } from 'react-native'
+import AppText from './app-text'
 
 interface InputFieldProps extends TextInputProps {
   placeholder: string
@@ -21,7 +22,7 @@ export default function InputField({ placeholder, value, onChangeText, secureTex
         secureTextEntry={secureTextEntry}
         {...rest} // Spread additional TextInput props
       />
-      {error && <Text style={styles.error}>{error}</Text>}
+      {error && <AppText style={styles.error}>{error}</AppText>}
     </View>
   )
 }

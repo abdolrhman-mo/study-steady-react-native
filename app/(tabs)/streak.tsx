@@ -9,6 +9,7 @@ import { setCurrentStreak, setTopStreak } from '@/redux/streakSlice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS } from '@/constants/colors';
+import AppText from '@/components/app-text';
 
 export default function StreakScreen(): JSX.Element {
     const dispatch = useDispatch();
@@ -48,8 +49,8 @@ export default function StreakScreen(): JSX.Element {
       </View>
     );
     
-    if (error) return <Text>Error: {error}</Text>;
-    if (!data) return <Text>No data available.</Text>;
+    if (error) return <AppText>Error: {error}</AppText>;
+    if (!data) return <AppText>No data available.</AppText>;
 
     return (
         <LinearGradient
@@ -60,17 +61,17 @@ export default function StreakScreen(): JSX.Element {
                 <Ionicons name="flame" size={100} color="#ff4500" />
             </View>
             <View style={{ paddingHorizontal: 20, alignItems: 'center' }}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#333', marginBottom: 10 }}>
+                <AppText style={{ fontSize: 20, fontWeight: 'bold', color: '#333', marginBottom: 10 }}>
                     Current Streak: {currentStreak} days
-                </Text>
-                <Text style={{ fontSize: 18, color: '#555', marginBottom: 10 }}>
+                </AppText>
+                <AppText style={{ fontSize: 18, color: '#555', marginBottom: 10 }}>
                     <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
                     Top Streak
                     : {topStreak} days
-                </Text>
-                <Text style={{ fontSize: 18, color: '#555' }}>
+                </AppText>
+                <AppText style={{ fontSize: 18, color: '#555' }}>
                     Total Study Hours: 54 hours
-                </Text>
+                </AppText>
             </View>
         </LinearGradient>
     );

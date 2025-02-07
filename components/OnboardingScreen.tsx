@@ -4,6 +4,7 @@ import AppIntroSlider from 'react-native-app-intro-slider'
 import { router } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LinearGradient } from 'expo-linear-gradient'
+import AppText from './app-text'
 
 interface Slide {
   key: string
@@ -50,7 +51,7 @@ export default function OnboardingScreen() {
       colors={['#E87C39', '#FF9B50']}
       style={styles.gradientButton}
     >
-      <Text style={styles.buttonText}>{label}</Text>
+      <AppText style={styles.buttonText}>{label}</AppText>
     </LinearGradient>
   )
 
@@ -63,8 +64,8 @@ export default function OnboardingScreen() {
         <View style={styles.slide}>
           <Image source={item.image} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.text}>{item.text}</Text>
+            <AppText style={styles.title}>{item.title}</AppText>
+            <AppText style={styles.text}>{item.text}</AppText>
           </View>
         </View>
       )}

@@ -6,6 +6,7 @@ import { router } from 'expo-router'
 import apiClient from '@/api/client'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENT_COLORS } from '@/constants/colors'
+import AppText from '@/components/app-text'
 
 const Profile = () => {
   const [data, setData] = useState<any>(null)
@@ -47,8 +48,8 @@ const Profile = () => {
       </View>
     )
   }
-  if (error) return <Text style={styles.errorText}>Error: {error}</Text>
-  if (!data) return <Text style={styles.errorText}>No data available.</Text>
+  if (error) return <AppText style={styles.errorText}>Error: {error}</AppText>
+  if (!data) return <AppText style={styles.errorText}>No data available.</AppText>
 
   const handleLogout = async () => {
     logoutUser()
@@ -69,11 +70,11 @@ const Profile = () => {
         colors={GRADIENT_COLORS}
         style={styles.container}
     >
-      <Text style={styles.streak}>Here you can log out.</Text>
+      <AppText style={styles.streak}>Here you can log out.</AppText>
 
       {/* Button wrapped in TouchableOpacity */}
       <TouchableOpacity style={styles.buttonLogout} onPress={confirmLogout}>
-        <Text style={styles.textStyle}>Log Out</Text>
+        <AppText style={styles.textStyle}>Log Out</AppText>
       </TouchableOpacity>
 
       <Modal
@@ -84,13 +85,13 @@ const Profile = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Are you sure you want to log out?</Text>
+            <AppText style={styles.modalText}>Are you sure you want to log out?</AppText>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, styles.buttonCancel]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Cancel</Text>
+                <AppText style={styles.textStyle}>Cancel</AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.buttonLogout]}
@@ -99,7 +100,7 @@ const Profile = () => {
                   handleLogout()
                 }}
               >
-                <Text style={styles.textStyle}>Log Out</Text>
+                <AppText style={styles.textStyle}>Log Out</AppText>
               </TouchableOpacity>
             </View>
           </View>

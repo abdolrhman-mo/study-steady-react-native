@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import AppText from './app-text';
 
 interface ButtonProps {
     title: string;
@@ -14,7 +15,7 @@ export default function Button({ title, onPress, disabled = false }: ButtonProps
             onPress={!disabled ? onPress : undefined}
             disabled={disabled}
         >
-            <Text style={[styles.text, disabled && styles.textDisabled]}>{title}</Text>
+            <AppText style={[styles.text, disabled && styles.textDisabled]}>{title}</AppText>
         </TouchableOpacity>
     );
 }

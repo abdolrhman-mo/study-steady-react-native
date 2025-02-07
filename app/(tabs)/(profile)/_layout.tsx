@@ -4,12 +4,13 @@ export default function Layout() {
     return (
         <Stack
             screenOptions={{
-                headerStyle: {
-                    backgroundColor: '#e0f7fa',
-                },
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
+                // headerStyle: {
+                //     backgroundColor: '#e0f7fa',
+                // },
+                // headerTitleStyle: {
+                //     fontWeight: 'bold',
+                // },
+                headerShown: false
             }}>
             <Stack.Screen 
                 name="profile"

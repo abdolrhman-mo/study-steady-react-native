@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons' // Import icons
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENT_COLORS } from '@/constants/colors'
+import AppText from '@/components/app-text'
 
 export default function LoginScreen() {
     const [username, setUsername] = useState('')
@@ -38,14 +39,14 @@ export default function LoginScreen() {
             colors={GRADIENT_COLORS}
             style={styles.container}
         >
-            <Text style={styles.title}>Login</Text>
+            <AppText style={styles.title}>Login</AppText>
             <InputField
                 placeholder="Username"
                 value={username}
                 onChangeText={setUsername}
                 style={styles.inputField}
             />
-            {errors.username && <Text style={styles.error}>{errors.username}</Text>}
+            {errors.username && <AppText style={styles.error}>{errors.username}</AppText>}
             
             <View style={styles.passwordContainer}>
                 <InputField
@@ -59,9 +60,9 @@ export default function LoginScreen() {
                     <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={24} color={showPassword ? '#1f6feb' : 'gray'} />
                 </TouchableOpacity>
             </View>
-            {errors.password && <Text style={styles.error}>{errors.password}</Text>}
+            {errors.password && <AppText style={styles.error}>{errors.password}</AppText>}
             <Button title={loading ? 'Logging in...' : 'Login'} onPress={handleLogin} disabled={loading} />
-            {error?.detail && <Text style={styles.error}>{error.detail}</Text>}
+            {error?.detail && <AppText style={styles.error}>{error.detail}</AppText>}
             <Link href="/signup" style={styles.link}>Don't have an account? Sign up now</Link>
         </LinearGradient>
     )

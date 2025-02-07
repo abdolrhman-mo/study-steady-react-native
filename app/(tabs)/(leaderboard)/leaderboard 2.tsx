@@ -41,7 +41,7 @@ const Leaderboard = () => {
     if (error)
         return (
             <View style={styles.center}>
-                <Text style={styles.errorText}>خطأ: {error}</Text>
+                <AppText style={styles.errorText}>خطأ: {error}</AppText>
             </View>
         );
 
@@ -51,9 +51,9 @@ const Leaderboard = () => {
                 href={{ pathname: '/user/[id]', params: { id: item.id } }}
                 style={styles.link}
             >
-                <Text style={styles.name}>{item.username}</Text>
+                <AppText style={styles.name}>{item.username}</AppText>
             </Link>
-            <Text style={styles.score}>{item.top_streak}</Text>
+            <AppText style={styles.score}>{item.top_streak}</AppText>
         </View>
     );
 
@@ -76,22 +76,22 @@ const Leaderboard = () => {
                 <View style={styles.profileCard}>
                     <View style={styles.profileHeader}>
                         <Icon name="person-circle" size={60} color="#00796b" />
-                        <Text style={styles.username}>{userData.username}</Text>
+                        <AppText style={styles.username}>{userData.username}</AppText>
                     </View>
 
                     <View style={styles.statsContainer}>
                         <View style={styles.statBox}>
-                            <Text style={styles.statNumber}>25</Text>
-                            <Text style={styles.statLabel}>المتابِعون</Text>
-                            {/* <Text style={styles.statNumber}>{userData.followers_count}</Text> */}
+                            <AppText style={styles.statNumber}>25</AppText>
+                            <AppText style={styles.statLabel}>المتابِعون</AppText>
+                            {/* <AppText style={styles.statNumber}>{userData.followers_count}</AppText> */}
                         </View>
 
                         <View style={styles.divider} />
 
                         <View style={styles.statBox}>
-                            <Text style={styles.statNumber}>10</Text>
-                            <Text style={styles.statLabel}>المتابَعون</Text>
-                            {/* <Text style={styles.statNumber}>{userData.following_count}</Text> */}
+                            <AppText style={styles.statNumber}>10</AppText>
+                            <AppText style={styles.statLabel}>المتابَعون</AppText>
+                            {/* <AppText style={styles.statNumber}>{userData.following_count}</AppText> */}
                         </View>
                     </View>
                 </View>
@@ -106,9 +106,9 @@ const Leaderboard = () => {
                 />
             ) : (
                 <View style={styles.center}>
-                    <Text style={styles.noFollowingMessage}>
+                    <AppText style={styles.noFollowingMessage}>
                         لم تتابع أي شخص بعد. ابدأ في متابعة المستخدمين لرؤية درجاتهم هنا!
-                    </Text>
+                    </AppText>
                     <Link href={'/search'}>
                         <Button title="ابحث عن أصدقاء لمتابعتهم" />
                     </Link>

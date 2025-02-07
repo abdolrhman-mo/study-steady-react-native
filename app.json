@@ -42,7 +42,17 @@
         }
       ],
       "expo-secure-store",
-      "expo-font"
+      [
+          "expo-font",
+          {
+            "fonts": [
+                "node_modules/@expo-google-fonts/poppins/Poppins_400Regular.ttf",
+                "node_modules/@expo-google-fonts/poppins/Poppins_500Medium.ttf",
+                "node_modules/@expo-google-fonts/poppins/Poppins_600SemiBold.ttf",
+                "node_modules/@expo-google-fonts/poppins/Poppins_700Bold.ttf"
+            ]
+          }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

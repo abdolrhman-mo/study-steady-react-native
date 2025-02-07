@@ -16,8 +16,7 @@ export const styles = StyleSheet.create({
   timer: {
     fontSize: 55,
     fontWeight: '500',
-    // marginBottom: 20,
-    // color: '#E87C39',
+    // fontFamily: ,
     color: '#000',
     // Progress circle styles
     position: 'absolute',

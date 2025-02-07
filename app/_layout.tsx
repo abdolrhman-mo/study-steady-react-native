@@ -4,12 +4,29 @@ import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 import { View, ActivityIndicator } from 'react-native';
+import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'
+import * as SplashScreen from 'expo-splash-screen'
 
 export default function RootLayout() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const router = useRouter();
+
+    const [fontsLoaded] = useFonts({
+        Poppins_Regular: Poppins_400Regular,
+        // Poppins_Bold: Poppins_700Bold,
+    })
+    
+      useEffect(() => {
+        async function prepare() {
+          await SplashScreen.preventAutoHideAsync()
+          if (fontsLoaded) {
+            await SplashScreen.hideAsync()
+          }
+        }
+        prepare()
+      }, [fontsLoaded])
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -28,7 +45,7 @@ export default function RootLayout() {
     }, [loading, isAuthenticated]);
     
 
-    if (loading) {
+    if (loading || !fontsLoaded) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <ActivityIndicator size="large" color="#E87C39" />

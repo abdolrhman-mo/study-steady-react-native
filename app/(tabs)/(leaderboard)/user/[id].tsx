@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { followUser, unfollowUser } from '@/redux/followingSlice'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENT_COLORS } from '@/constants/colors'
+import AppText from '@/components/app-text'
 
 const User = () => {
   const dispatch = useDispatch()
@@ -88,28 +89,28 @@ const User = () => {
     </View>
   )
 
-  if (error) return <Text>Error: {error}</Text>
-  if (!userData) return <Text>No data available.</Text>
+  if (error) return <AppText>Error: {error}</AppText>
+  if (!userData) return <AppText>No data available.</AppText>
 
   return (
     <LinearGradient
         colors={GRADIENT_COLORS}
         style={styles.container}
     >
-      <Text style={styles.title}>{userData.username}</Text>
-      <Text style={styles.streak}>Top Streak: {userData.top_streak}</Text>
+      <AppText style={styles.title}>{userData.username}</AppText>
+      <AppText style={styles.streak}>Top Streak: {userData.top_streak}</AppText>
       <TouchableOpacity
         style={following ? styles.unfollowButton : styles.followButton}
         onPress={handleFollowToggle}
         disabled={isProcessing} // Disable button while processing
       >
-        <Text style={styles.buttonText}>
+        <AppText style={styles.buttonText}>
           {isProcessing
             ? 'Processing...' // Show "Processing..." text when the action is in progress
             : following
             ? 'Unfollow'
             : 'Follow'}
-        </Text>
+        </AppText>
       </TouchableOpacity>
     </LinearGradient>
   )

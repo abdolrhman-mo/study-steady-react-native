@@ -12,6 +12,7 @@ import { setCurrentStreak, setTopStreak, updateCurrentStreak } from '@/redux/str
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors';
 import { Svg, Circle } from 'react-native-svg'
+import AppText from '@/components/app-text';
 
 
 export default function PomodoroTimer(): JSX.Element {
@@ -60,13 +61,6 @@ export default function PomodoroTimer(): JSX.Element {
 
         fetchData()
     }, [])
-
-//   if (userLoading) return <Text>جاري التحميل...</Text>
-//   if (userError) return <Text>حدث خطأ: {userError}</Text>
-//   if (!userData) return <Text>لا توجد بيانات.</Text>
-
-
-
 
     useEffect(() => {
         if (timeLeft === 0 && isRunning) {
@@ -176,7 +170,7 @@ export default function PomodoroTimer(): JSX.Element {
           return (
             <View style={styles.alertContainer}>
               <View style={styles.alert}>
-                <Text style={styles.alertText}>Start the timer and study to begin your streak!</Text>
+                <AppText style={styles.alertText}>Start the timer and study to begin your streak!</AppText>
                 <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
                 <TouchableOpacity
                   style={styles.alertCloseButton}
@@ -221,7 +215,7 @@ export default function PomodoroTimer(): JSX.Element {
                 strokeLinecap="round"
             />
             </Svg>
-            <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+            <AppText style={styles.timer}>{formatTime(timeLeft)}</AppText>
         </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
@@ -230,7 +224,7 @@ export default function PomodoroTimer(): JSX.Element {
               disabled={isRunning && !isPaused}
             >
               <Icon name="timer-outline" size={20} color="#fff" />
-              <Text style={styles.buttonText}>25 minutes</Text>
+              <AppText style={styles.buttonText}>25 minutes</AppText>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
@@ -238,7 +232,7 @@ export default function PomodoroTimer(): JSX.Element {
               disabled={isRunning && !isPaused}
             >
               <Icon name="timer-outline" size={20} color="#fff" />
-              <Text style={styles.buttonText}>50 minutes</Text>
+              <AppText style={styles.buttonText}>50 minutes</AppText>
             </TouchableOpacity>
           </View>
           <View style={styles.controlButtonsContainer}>
@@ -248,7 +242,7 @@ export default function PomodoroTimer(): JSX.Element {
                 onPress={pauseTimer}
               >
                 <Icon name="pause" size={20} color="#fff" />
-                {/* <Text style={styles.controlButtonText}>Pause</Text> */}
+                {/* <AppText style={styles.controlButtonText}>Pause</AppText> */}
               </TouchableOpacity>
             )}
             {isPaused && (
@@ -257,7 +251,7 @@ export default function PomodoroTimer(): JSX.Element {
                 onPress={resumeTimer}
               >
                 <Icon name="play" size={20} color="#fff" />
-                {/* <Text style={styles.controlButtonText}>Resume</Text> */}
+                {/* <AppText style={styles.controlButtonText}>Resume</AppText> */}
               </TouchableOpacity>
             )}
           </View>
@@ -269,7 +263,7 @@ export default function PomodoroTimer(): JSX.Element {
           >
             <View style={styles.modalContainer}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>{isBreak ? "Break over!" : "Time's up!"}</Text>
+                <AppText style={styles.modalText}>{isBreak ? "Break over!" : "Time's up!"}</AppText>
                 <View style={styles.modalButtonsContainer}>
                   {isBreak ? (
                     <>
@@ -278,14 +272,14 @@ export default function PomodoroTimer(): JSX.Element {
                         onPress={handleNewSession}
                       >
                         <Icon name="checkmark-outline" size={20} color="#fff" />
-                        <Text style={styles.modalButtonText}>Start New Session</Text>
+                        <AppText style={styles.modalButtonText}>Start New Session</AppText>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={styles.modalButton}
                         onPress={handleCancel}
                       >
                         <Icon name="close-outline" size={20} color="#fff" />
-                        <Text style={styles.modalButtonText}>Cancel</Text>
+                        <AppText style={styles.modalButtonText}>Cancel</AppText>
                       </TouchableOpacity>
                     </>
                   ) : (
@@ -295,14 +289,14 @@ export default function PomodoroTimer(): JSX.Element {
                         onPress={handleBreak}
                       >
                         <Icon name="checkmark-outline" size={20} color="#fff" />
-                        <Text style={styles.modalButtonText}>Take a Break</Text>
+                        <AppText style={styles.modalButtonText}>Take a Break</AppText>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={styles.modalButton}
                         onPress={handleCancel}
                       >
                         <Icon name="close-outline" size={20} color="#fff" />
-                        <Text style={styles.modalButtonText}>Cancel</Text>
+                        <AppText style={styles.modalButtonText}>Cancel</AppText>
                       </TouchableOpacity>
                     </>
                   )}
@@ -318,13 +312,13 @@ export default function PomodoroTimer(): JSX.Element {
           >
             <View style={styles.modalContainer}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Please don't leave the app to prevent the timer from stopping.</Text>
+                <AppText style={styles.modalText}>Please don't leave the app to prevent the timer from stopping.</AppText>
                 <TouchableOpacity
                   style={styles.modalButton}
                   onPress={() => setPromptModalVisible(false)}
                 >
                   <Icon name="close-outline" size={20} color="#fff" />
-                  <Text style={styles.modalButtonText}>Okay</Text>
+                  <AppText style={styles.modalButtonText}>Okay</AppText>
                 </TouchableOpacity>
               </View>
             </View>
