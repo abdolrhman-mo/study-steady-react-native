@@ -11,7 +11,7 @@ import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS, PRIMARY_COLOR, SECONDARY_COLOR } from '@/constants/colors';
+import { GRADIENT_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, TROPHY_COLOR, WHITE } from '@/constants/colors';
 import AppText from '@/components/app-text';
 import { shadowStyle } from '@/styles/styles';
 
@@ -84,7 +84,7 @@ const Leaderboard = () => {
         <Link style={styles.tableRow}  href={{ pathname: '/user/[id]', params: { id: item.id } }}>
             <AppText style={styles.rowText}>{item.username}</AppText>
             <View style={styles.streakContainer}>
-                <Icon name="trophy" size={20} color="#FFD700" style={styles.trophyIcon} />
+                <Icon name="trophy" size={20} color={TROPHY_COLOR} style={styles.trophyIcon} />
                 <AppText style={styles.rowText}>{item.top_streak}</AppText>
             </View>
         </Link>
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: COLORS.secondary,
+        backgroundColor: WHITE,
         padding: 15,
         borderRadius: 10,
         marginBottom: 20,

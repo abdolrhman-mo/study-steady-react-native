@@ -5,7 +5,7 @@ import { router } from 'expo-router'
 import apiClient from '@/api/client'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors'
+import { GRADIENT_COLORS, PRIMARY_COLOR, TROPHY_COLOR } from '@/constants/colors'
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins'
 import AppText from '@/components/app-text'
@@ -76,7 +76,7 @@ const Profile = () => {
           <AppText style={styles.streak}>Streak: {data.current_streak}</AppText> {/* Translated */}
         </View>
         <View style={styles.streakRow}>
-          <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
+          <Icon name="trophy" size={20} color={TROPHY_COLOR} style={styles.icon} />
           <AppText style={styles.streak}>Top Streak: {data.top_streak}</AppText> {/* Translated */}
         </View>
       </View>

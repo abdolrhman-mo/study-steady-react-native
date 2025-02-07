@@ -7,7 +7,7 @@ import { API_ENDPOINTS } from '@/api/endpoints'
 import { useDispatch } from 'react-redux'
 import { followUser, unfollowUser } from '@/redux/followingSlice'
 import { LinearGradient } from 'expo-linear-gradient'
-import { GRADIENT_COLORS } from '@/constants/colors'
+import { GRADIENT_COLORS, TROPHY_COLOR } from '@/constants/colors'
 import AppText from '@/components/app-text'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -100,7 +100,7 @@ const User = () => {
     >
       <AppText style={styles.title}>{userData.username}</AppText>
       <AppText style={styles.streak}>
-            <Icon name="trophy" size={20} color="#FFD700" style={styles.trophyIcon} />
+            <Icon name="trophy" size={20} color={TROPHY_COLOR} style={styles.trophyIcon} />
             Top Streak: {userData.top_streak}
       </AppText>
       <TouchableOpacity

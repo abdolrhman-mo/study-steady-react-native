@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors';
 import { Svg, Circle } from 'react-native-svg'
 import AppText from '@/components/app-text';
+import { shadowStyle } from '@/styles/styles';
 
 
 export default function PomodoroTimer(): JSX.Element {
@@ -169,7 +170,7 @@ export default function PomodoroTimer(): JSX.Element {
         if (streak === 0) {
           return (
             <View style={styles.alertContainer}>
-              <View style={styles.alert}>
+              <View style={[styles.alert, shadowStyle.default]}>
                 <AppText style={styles.alertText}>Start the timer and study to begin your streak!</AppText>
                 <Icon name="flame" size={20} color="#ff4500" style={styles.icon} />
                 <TouchableOpacity
