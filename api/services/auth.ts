@@ -10,9 +10,9 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-export const signup = async (username: string, password: string) => {
+export const signup = async (first_name: string, last_name: string, username: string, password: string) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.REGISTER, { username, password });
+    const response = await apiClient.post(API_ENDPOINTS.REGISTER, { first_name, last_name, username, password });
     return response.data;
   } catch (error:any) {
     throw error.response?.data || 'Signup failed';

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     link: {
-        color: '#1f6feb',
+        color: '#E87C39',
         marginTop: 20,
         textAlign: 'center',
     },

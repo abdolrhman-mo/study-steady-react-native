@@ -5,14 +5,16 @@ import Button from '../../components/button'
 import { validatePassword, validateUsername } from '../../utils/validation'
 import { Link, router } from 'expo-router'
 import { useSignup } from '@/api/hooks/useAuth'
-import { Ionicons } from '@expo/vector-icons' // Import icons
+import { Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function SignupScreen() {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false) // State for toggling visibility
-  const [errors, setErrors] = useState({ username: '', password: '' })
+  const [showPassword, setShowPassword] = useState(false)
+  const [errors, setErrors] = useState({ firstName: '', lastName: '', username: '', password: '' })
   const { performSignup, loading, error } = useSignup()
 
   const handleSignup = async () => {
@@ -20,21 +22,29 @@ export default function SignupScreen() {
     const passwordError = false
 
     if (usernameError || passwordError) {
-        setErrors({ username: usernameError || '', password: passwordError || '' })
-        return
+      setErrors({ firstName:'', lastName: '', username: usernameError || '', password: passwordError || '' })
+      return
     }
 
-    const result = await performSignup(username, password)
+    const result = await performSignup(firstName, lastName, username, password)
     if (result) {
-        // console.log('Signup successful:', result)
-        // await AsyncStorage.setItem('onboardingCompleted', 'false') // Ensure onboarding shows
-        router.replace('/onboarding')
+      router.replace('/onboarding')
     }
-}
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create an Account</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: '7px' }}>
+        <View style={{ flex: 1 }}>
+          <InputField placeholder="First Name" value={firstName} onChangeText={setFirstName} />
+          {errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
+        </View>
+        <View style={{ flex: 1}}>
+          <InputField placeholder="Last Name" value={lastName} onChangeText={setLastName} />
+          {errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
+        </View>
+      </View>
 
       <InputField placeholder="Username" value={username} onChangeText={setUsername} />
       {errors.username && <Text style={styles.error}>{errors.username}</Text>}
@@ -45,7 +55,7 @@ export default function SignupScreen() {
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword} // Toggle visibility
-          style={styles.inputField} // Apply custom styling for better input field
+          style={styles.inputField && styles.passwordContainer } // Apply custom styling for better input field
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.icon}>
           <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={24} color={showPassword ? '#1f6feb' : 'gray'} />
@@ -55,7 +65,7 @@ export default function SignupScreen() {
       {errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
       <Button title={loading ? 'Creating Account...' : 'Create Account'} onPress={handleSignup} disabled={loading} />
-      {error?.username && <Text style={styles.error}>{error.username[0]}</Text>}
+      {errors?.username && <Text style={styles.error}>{errors.username[0]}</Text>}
 
       <Link href="/login" style={styles.link}>
         Already have an account? Login
@@ -79,18 +89,18 @@ const styles = StyleSheet.create({
   passwordContainer: {
     // flexDirection: 'row',
     // alignItems: 'center',
-    // borderBottomWidth: 2,
-    // borderColor: '#1f6feb', // Highlight border color for the password field
+    // borderBottomWidth: 1,
+    // borderColor: '#E87C39',
     // marginBottom: 20,
   },
   inputField: {
-    // flex: 1,
-    // padding: 12,
-    // fontSize: 16,
-    // borderWidth: 1,
-    // borderColor: '#ccc',
-    // borderRadius: 5,
-    // backgroundColor: '#f9f9f9',
+    flex: 1,
+    padding: 12,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#f9f9f9',
   },
   icon: {
     padding: 10,
@@ -101,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   link: {
-    color: '#1f6feb',
+    color: '#E87C39',
     marginTop: 20,
     textAlign: 'center',
   },

@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     leaderboardLink: {
         marginTop: 16,
         padding: 16,
-        backgroundColor: '#007bff',
+        backgroundColor: '#E87C39',
         borderRadius: 8,
         alignItems: 'center',
     },

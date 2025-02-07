@@ -47,7 +47,8 @@ const Profile = () => {
     <View style={styles.container}>
       {/* Profile Header */}
       <View style={styles.header}>
-        <Icon name="person-circle-outline" size={60} color="#2196F3" />
+        {/* <Icon name="person-circle-outline" size={60} color="#2196F3" /> */}
+        <Icon name="person-circle-outline" size={60} color="#E87C39" />
         <Text style={styles.title}>{data.username}</Text>
       </View>
 
@@ -79,6 +80,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#e0f7fa',
+    justifyContent: 'center',
+    marginBottom: 80,
   },
   header: {
     flexDirection: 'row',
@@ -89,7 +92,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#2196F3',
+    // color: '#2196F3',
+    color: '#E87C39',
     marginLeft: 10,
   },
   streakInfo: {
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     marginBottom: 15,
-    backgroundColor: '#2196F3',
+    backgroundColor: '#E87C39',
     borderRadius: 30,
     width: '70%',
     justifyContent: 'center',
