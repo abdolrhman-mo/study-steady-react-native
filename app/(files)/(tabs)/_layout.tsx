@@ -7,8 +7,6 @@ import apiClient from '@/api/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setCurrentStreak } from '@/redux/streakSlice';
-import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS } from '@/constants/colors';
 import AppText from '@/components/app-text';
 
 const hasOneDayPassed = (apiDateString: string) => {
@@ -82,7 +80,7 @@ export default function TabLayout() {
         ),
         headerRight: () => (
           <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-            <Link href={'/(tabs)/streak'}>
+            <Link href={'/(files)/(tabs)/streak'}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
                 <Ionicons name="flame" size={24} color="#ff4500" />
                 <AppText style={{ marginLeft: 5, fontSize: 16, color: '#ff4500', fontWeight: 'bold' }}>

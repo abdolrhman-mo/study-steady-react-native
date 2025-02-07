@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, TextInput, S
 import apiClient from '@/api/client';
 import { getId } from '@/utils/tokenStorage';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS } from '@/constants/colors';
+import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors';
 import AppText from '@/components/app-text';
 import { Link } from 'expo-router';
 
@@ -49,7 +49,7 @@ export default function FollowersFollowing() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#E87C39" />
+        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
       </View>
     );
   }
@@ -57,38 +57,49 @@ export default function FollowersFollowing() {
   if (error) return <AppText>Error: {error}</AppText>;
 
   return (
-    <LinearGradient
-        colors={GRADIENT_COLORS}
-        style={styles.container}
-    >
+    <LinearGradient colors={GRADIENT_COLORS} style={styles.container}>
       <View style={styles.tabContainer}>
         {['followers', 'following'].map((tab: any) => (
           <TouchableOpacity key={tab} onPress={() => setActiveTab(tab)}>
-            <AppText style={{ fontWeight: activeTab === tab ? 'bold' : 'normal' }}>{tab === 'followers' ? 'Followers' : 'Following'}</AppText>
+            <AppText style={{ fontWeight: activeTab === tab ? 'bold' : 'normal' }}>
+              {tab === 'followers' ? 'Followers' : 'Following'}
+            </AppText>
           </TouchableOpacity>
         ))}
       </View>
-      <TextInput 
-        style={styles.searchBar} 
-        placeholder="Search by username..." 
-        value={searchQuery} 
-        onChangeText={setSearchQuery} 
+  
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search by username..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
       />
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item: any) => (activeTab === 'followers' ? item.follower.id : item.following.id).toString()}
-        renderItem={({ item }) => {
-          const user = activeTab === 'followers' ? item.follower : item.following;
-          return (
-            <Link style={styles.item} href={{ pathname: '/user/[id]', params: { id: user.id } }}>
-              <AppText style={styles.username}>{user.username || 'Username not available'}</AppText>
-              <AppText style={styles.email}>{user.email || 'No email available'}</AppText>
-            </Link>
-          );
-        }}
-      />
+  
+      {filteredData.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <AppText style={styles.emptyMessage}>
+            {searchQuery ? 'No users found.' : `No ${activeTab} yet.`}
+          </AppText>
+        </View>
+      ) : (
+        <FlatList
+          data={filteredData}
+          keyExtractor={(item: any) =>
+            (activeTab === 'followers' ? item.follower.id : item.following.id).toString()
+          }
+          renderItem={({ item }) => {
+            const user = activeTab === 'followers' ? item.follower : item.following
+            return (
+              <Link style={styles.item} href={{ pathname: '/user/[id]', params: { id: user.id } }}>
+                <AppText style={styles.username}>{user.username || 'Username not available'}</AppText>
+              </Link>
+            )
+          }}
+        />
+      )}
     </LinearGradient>
-  );
+  )
+  
 }
 
 const styles = StyleSheet.create({
@@ -102,5 +113,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyMessage: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 20,
+    textAlign: 'center',
   },
 });

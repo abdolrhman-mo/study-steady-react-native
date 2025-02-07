@@ -130,7 +130,7 @@ export default function PomodoroTimer(): JSX.Element {
     };
 
     const playSound = async (): Promise<void> => {
-        const { sound } = await Audio.Sound.createAsync(require('../../assets/iphone_alarm.mp3'));
+        const { sound } = await Audio.Sound.createAsync(require('@/assets/iphone_alarm.mp3'));
         setSound(sound);
         await sound.playAsync();
     };

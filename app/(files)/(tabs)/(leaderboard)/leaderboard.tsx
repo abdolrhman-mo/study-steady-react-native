@@ -9,14 +9,12 @@ import { API_ENDPOINTS } from '@/api/endpoints';
 import { getId } from '@/utils/tokenStorage';
 import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, TROPHY_COLOR, WHITE } from '@/constants/colors';
 import AppText from '@/components/app-text';
 import { shadowStyle } from '@/styles/styles';
 
 const Leaderboard = () => {
-    const navigation = useNavigation()
     const dispatch = useDispatch()
     const followingList = useSelector((state: RootState) => state.following.followingList)
     const followingCount = useSelector((state: RootState) => state.following.followingCount)

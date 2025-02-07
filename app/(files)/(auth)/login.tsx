@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import InputField from '../../components/input-field'
-import Button from '../../components/button'
-import { validatePassword, validateUsername } from '../../utils/validation'
+import InputField from '@/components/input-field'
+import Button from '@/components/button'
+import { validatePassword, validateUsername } from '@/utils/validation'
 import { Link, router } from 'expo-router'
 import { useLogin } from '@/api/hooks/useAuth'
 import { Ionicons } from '@expo/vector-icons' // Import icons
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LinearGradient } from 'expo-linear-gradient'
-import { GRADIENT_COLORS } from '@/constants/colors'
 import AppText from '@/components/app-text'
+import { GRADIENT_COLORS } from '@/constants/colors'
 
 export default function LoginScreen() {
     const [username, setUsername] = useState('')

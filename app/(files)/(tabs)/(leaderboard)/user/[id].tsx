@@ -7,9 +7,9 @@ import { API_ENDPOINTS } from '@/api/endpoints'
 import { useDispatch } from 'react-redux'
 import { followUser, unfollowUser } from '@/redux/followingSlice'
 import { LinearGradient } from 'expo-linear-gradient'
-import { GRADIENT_COLORS, TROPHY_COLOR } from '@/constants/colors'
 import AppText from '@/components/app-text'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { GRADIENT_COLORS, TROPHY_COLOR } from '@/constants/colors'
 
 const User = () => {
   const dispatch = useDispatch()
