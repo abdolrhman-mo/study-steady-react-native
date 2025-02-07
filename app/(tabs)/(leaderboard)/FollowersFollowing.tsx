@@ -5,6 +5,7 @@ import { getId } from '@/utils/tokenStorage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS } from '@/constants/colors';
 import AppText from '@/components/app-text';
+import { Link } from 'expo-router';
 
 export default function FollowersFollowing() {
   const [data, setData] = useState({ followers: [], following: [] });
@@ -79,10 +80,10 @@ export default function FollowersFollowing() {
         renderItem={({ item }) => {
           const user = activeTab === 'followers' ? item.follower : item.following;
           return (
-            <View style={styles.item}>
+            <Link style={styles.item} href={{ pathname: '/user/[id]', params: { id: user.id } }}>
               <AppText style={styles.username}>{user.username || 'Username not available'}</AppText>
               <AppText style={styles.email}>{user.email || 'No email available'}</AppText>
-            </View>
+            </Link>
           );
         }}
       />
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
   tabContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 },
   searchBar: { height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 10, paddingHorizontal: 10, marginBottom: 15, backgroundColor: '#fff' },
-  item: { padding: 10, borderBottomWidth: 1, borderColor: '#ccc' },
+  item: { display:'flex', flexDirection:'column', padding: 10, borderBottomWidth: 1, borderColor: '#ccc' },
   username: { fontSize: 16, fontWeight: 'bold' },
   email: { color: '#666' },
   loadingContainer: {

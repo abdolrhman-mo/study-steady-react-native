@@ -73,13 +73,13 @@ const Leaderboard = () => {
     //     </View>
     // );
     const renderItem = ({ item }: { item: any }) => (
-        <View style={styles.tableRow}>
+        <Link style={styles.tableRow}  href={{ pathname: '/user/[id]', params: { id: item.id } }}>
             <AppText style={styles.rowText}>{item.username}</AppText>
             <View style={styles.streakContainer}>
                 <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
                 <AppText style={styles.rowText}>{item.top_streak}</AppText>
             </View>
-        </View>
+        </Link>
     );
 
     const filteredList = followingList?.filter((user: any) =>
@@ -99,6 +99,7 @@ const Leaderboard = () => {
                 />
             </Link>
     
+            {/* Personal-Info Box */}
             {userData && (
                 <View style={styles.personalInfo}>
                     <View style={styles.infoBlock}>
@@ -199,6 +200,7 @@ const styles = StyleSheet.create({
     },
 
     tableRow: {
+        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 10,

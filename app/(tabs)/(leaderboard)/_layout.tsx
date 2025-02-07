@@ -12,6 +12,7 @@ export default function Layout() {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
+                headerShown: false,
             }}
         >
             <Stack.Screen
