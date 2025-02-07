@@ -68,9 +68,9 @@ export default function StreakScreen(): JSX.Element {
                     <Icon name="trophy" size={20} color="#FFD700" style={styles.trophyIcon} />
                     Top Streak: {topStreak} days
                 </AppText>
-                <AppText style={{ fontSize: 18, color: '#555' }}>
+                {/* <AppText style={{ fontSize: 18, color: '#555' }}>
                     Total Study Hours: 54 hours
-                </AppText>
+                </AppText> */}
             </View>
         </LinearGradient>
     );
