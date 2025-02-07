@@ -89,7 +89,9 @@ export default function TabLayout() {
             </Link>
             <Link href={'/profile'}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Ionicons name="person-circle-outline" size={24} color="#000" />
+                {/* <Ionicons name="person-circle-outline" size={24} color="#000" /> */}
+                <Ionicons name="person-circle-outline" size={24} style={{color: '#E87C39'}} />
+                {/* <Ionicons name="person-circle-outline" size={24} style={{color: '#f88e55'}} /> */}
               </View>
             </Link>
           </View>

@@ -33,29 +33,58 @@ export const useLogin = () => {
     return { performLogin, loading, error };
 };
 
+// export const useSignup = () => {
+//     const [loading, setLoading] = useState(false);
+//     const [error, setError] = useState<any | null>(null);
+
+//     const performSignup = async (username: string, password: string) => {
+//         setLoading(true);
+//         setError(null);
+//         try {
+//             const data = await signup(username, password);
+
+//             console.log('signedup data', data)
+
+//             const token = data.token;
+//             await saveToken(token);
+            
+//             const id = data.id;
+//             await saveId(id);
+
+//             console.log('useAuth: Signup successful:', data);
+//             return data;
+//         } catch (err: any) {
+//             setError(err);
+//             console.error('useAuth: Signup error:', err);
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     return { performSignup, loading, error };
+// };
+
 export const useSignup = () => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<any | null>(null);
+    const [error, setError] = useState<{ message?: string } | null>(null);
 
-    const performSignup = async (username: string, password: string) => {
+    const performSignup = async (firstName: string, lastName: string, username: string, password: string) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await signup(username, password);
+            const data = await signup( firstName, lastName, username, password );
 
-            console.log('signedup data', data)
+            console.log('Signed up data:', data);
 
-            const token = data.token;
-            await saveToken(token);
-            
-            const id = data.id;
-            await saveId(id);
+            await saveToken(data.token);
+            await saveId(data.id);
 
             console.log('useAuth: Signup successful:', data);
             return data;
         } catch (err: any) {
-            setError(err);
-            console.error('useAuth: Signup error:', err);
+            const errorMessage = err?.message || 'An unexpected error occurred';
+            setError({ message: errorMessage });
+            console.error('useAuth: Signup error:', errorMessage);
         } finally {
             setLoading(false);
         }
@@ -63,6 +92,7 @@ export const useSignup = () => {
 
     return { performSignup, loading, error };
 };
+
 
 export const useLogout = () => {
     const logoutUser = async () => {

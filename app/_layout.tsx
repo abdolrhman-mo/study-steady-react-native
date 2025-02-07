@@ -17,13 +17,27 @@ export default function RootLayout() {
             console.log('layout token:', token);
             setIsAuthenticated(!!token);
             setLoading(false); // Set loading to false after authentication check
-            if (!token) {
-                router.replace('/signup');
-            }
+            // if (!token) {
+            //     router.replace('/signup');
+            // }
+            // if (!token) {
+            //     requestAnimationFrame(() => {
+            //         router.replace('/signup');
+            //     });
+            // }
+            
         };
 
         checkAuth();
     }, []);
+    useEffect(() => {
+        // Redirect to the signup page if authentication check is complete and the user is not authenticated.
+        // This prevents navigation attempts before the root layout is mounted.
+        if (!loading && !isAuthenticated) {
+            router.replace('/signup');
+        }
+    }, [loading, isAuthenticated]);
+    
 
     if (loading) {
         return (
@@ -39,7 +53,8 @@ export default function RootLayout() {
                 <Stack.Screen name="/" />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 {/* <Stack.Screen name="streak" options={{ headerShown: true, headerTitle: 'Streak' }} /> */}
-                <Stack.Screen name='(auth)/onboarding'  options={{ headerShown: false }}  />
+                <Stack.Screen name='(auth)'  options={{ headerShown: false }}  />
+                {/*// I want all the (auth)/evreything to be headershown false*/}
                 <Stack.Screen name='+not-found' />
             </Stack>
         </Provider>

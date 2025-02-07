@@ -55,17 +55,26 @@ const Leaderboard = () => {
             </View>
         );
         
+    // const renderItem = ({ item }: { item: any }) => (
+    //     <View style={styles.item}>
+    //         <Link
+    //             href={{ pathname: '/user/[id]', params: { id: item.id } }}
+    //             style={styles.link}
+    //         >
+    //             <Text style={styles.name}>{item.username}</Text>
+    //         </Link>
+    //         <View style={styles.streakContainer}>
+    //             <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
+    //             <Text style={styles.score}>{item.top_streak}</Text>
+    //         </View>
+    //     </View>
+    // );
     const renderItem = ({ item }: { item: any }) => (
-        <View style={styles.item}>
-            <Link
-                href={{ pathname: '/user/[id]', params: { id: item.id } }}
-                style={styles.link}
-            >
-                <Text style={styles.name}>{item.username}</Text>
-            </Link>
+        <View style={styles.tableRow}>
+            <Text style={styles.rowText}>{item.username}</Text>
             <View style={styles.streakContainer}>
                 <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
-                <Text style={styles.score}>{item.top_streak}</Text>
+                <Text style={styles.rowText}>{item.top_streak}</Text>
             </View>
         </View>
     );
@@ -73,77 +82,158 @@ const Leaderboard = () => {
     const filteredList = followingList?.filter((user: any) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
     return (
         <View style={styles.container}>
-            {/* Search Bar */}
-            <TextInput
-                style={styles.searchBar}
-                placeholder="Search for friends"
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-            />
-
-            {/* Personal Info Section */}
+            <Link href="/search">
+                <TextInput
+                    style={styles.searchBar}
+                    placeholder="Search for friends"
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                />
+            </Link>
+    
             {userData && (
                 <View style={styles.personalInfo}>
                     <View style={styles.infoBlock}>
-                        <Icon name="person-circle-outline" size={50} color="#2196F3" />
+                        <Icon name="person-circle-outline" size={50} color="#E87C39" />
                         <Text style={styles.infoText}>{userData.username}</Text>
                     </View>
-                    <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')} >
+                    <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
                         <Text style={styles.infoLabel}>Followers</Text>
                         <Text style={styles.infoText}>25</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
                         <Text style={styles.infoLabel}>Following</Text>
                         <Text style={styles.infoText}>10</Text>
                     </TouchableOpacity>
                 </View>
             )}
-
-            {/* Data of Followed People */}
+    
+            
             {filteredList?.length > 0 ? (
-                <FlatList
-                    data={filteredList}
-                    renderItem={renderItem}
-                    keyExtractor={(item: any) => item.id.toString()}
-                />
+                // {/* Leaderboard Title */}
+                <>
+                    <Text style={styles.leaderboardTitle}>Following</Text>
+            
+                    {/* Table Header */}
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.headerText}>Username</Text>
+                        <Text style={styles.headerText}>Top Streak</Text>
+                    </View>
+            
+                    {/* Table Body */}
+                        <FlatList
+                            data={filteredList}
+                            renderItem={renderItem}
+                            keyExtractor={(item: any) => item.id.toString()}
+                            contentContainerStyle={styles.tableBody}
+                        />
+                </>
             ) : (
                 <View style={styles.center}>
-                    <Text style={styles.noFollowingMessage}>
+                    <Text style={styles.noFollowingMessage} >
                         You haven't followed anyone yet. Start following users to see their scores here!
                     </Text>
                     <Link href={'/search'}>
-                        <Button title="Search for friends to follow" />
+                        <Button title="Search for friends to follow" color={'#E87C39'}/>
                     </Link>
                 </View>
             )}
         </View>
     );
 };
+const COLORS = {
+    primary: '#E87C39',
+    secondary: '#F6DECF',
+    background: '#e0f7fa',
+    textPrimary: '#333',
+    textSecondary: '#444',
+    textMuted: '#888',
+    white: '#fff',
+    border: '#ccc',
+    error: '#d32f2f',
+    infoLabel: '#00796b',
+};
 
 const styles = StyleSheet.create({
+    leaderboardTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10,
+        color: COLORS.textPrimary,
+    },
+    
+    tableHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        backgroundColor: COLORS.primary,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderWidth: 2,
+        borderColor: COLORS.primary,
+    },
+    
+    headerText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLORS.white,
+    },
+
+    tableBody: {
+        borderWidth: 2,
+        borderTopWidth: 0,
+        borderColor: COLORS.primary,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        overflow: 'hidden',
+    },
+
+    tableRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.primary,
+        backgroundColor: '#FFF6F0',
+    },
+
+    rowText: {
+        fontSize: 16,
+        color: COLORS.textPrimary,
+    },
+
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#e0f7fa',
+        backgroundColor: COLORS.background,
     },
     searchBar: {
         height: 40,
-        borderColor: '#ccc',
+        borderColor: 'gray',
         borderWidth: 1,
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        marginBottom: 15,
+        borderRadius: 20,
+        paddingHorizontal: 15,
         backgroundColor: '#fff',
+        marginTop: 16,
+        // height: 40,
+        // borderColor: COLORS.border,
+        // borderWidth: 1,
+        // borderRadius: 10,
+        // paddingHorizontal: 10,
+        marginBottom: 15,
+        // backgroundColor: COLORS.white,
+        width: '100%',
     },
     personalInfo: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: COLORS.secondary,
         padding: 15,
         borderRadius: 10,
         marginBottom: 20,
@@ -153,20 +243,43 @@ const styles = StyleSheet.create({
     },
     infoLabel: {
         fontSize: 16,
-        color: '#00796b',
+        color: COLORS.infoLabel,
         fontWeight: 'bold',
     },
     infoText: {
         fontSize: 18,
-        color: '#444',
+        color: COLORS.textSecondary,
         marginTop: 5,
     },
+    noFollowingMessage: {
+        fontSize: 16,
+        textAlign: 'center',
+        color: COLORS.textMuted,
+        marginVertical: 20,
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 16,
+        color: COLORS.error,
+        marginBottom: 10,
+    },
+    streakContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    trophyIcon: {
+        marginRight: 5,
+    },    
     item: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        borderBottomColor: COLORS.border,
         alignItems: 'center',
     },
     link: {
@@ -177,29 +290,6 @@ const styles = StyleSheet.create({
     },
     score: {
         fontSize: 18,
-    },
-    noFollowingMessage: {
-        fontSize: 16,
-        textAlign: 'center',
-        color: '#888',
-        marginVertical: 20,
-    },
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    errorText: {
-        fontSize: 16,
-        color: '#d32f2f',
-        marginBottom: 10,
-    },
-    streakContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    trophyIcon: {
-        marginRight: 5, // Adds space between the trophy and the score
     },
     loadingContainer: {
         flex: 1,
