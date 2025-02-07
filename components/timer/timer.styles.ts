@@ -6,11 +6,22 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Progress Circle
+  timerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 20,
+  },
   timer: {
     fontSize: 48,
     fontWeight: 'bold',
-    marginBottom: 20,
+    // marginBottom: 20,
     color: '#E87C39',
+    // Progress circle styles
+    position: 'absolute',
+    // fontSize: 24,
+    // color: '#fff',  
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -47,6 +58,7 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     marginLeft: 10,
+    borderRadius: 25,
   },
   disabledButton: {
     opacity: 0.5,

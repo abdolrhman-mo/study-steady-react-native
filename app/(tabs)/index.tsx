@@ -10,7 +10,8 @@ import apiClient from '@/api/client'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentStreak, setTopStreak, updateCurrentStreak } from '@/redux/streakSlice';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS } from '@/constants/colors';
+import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors';
+import { Svg, Circle } from 'react-native-svg'
 
 
 export default function PomodoroTimer(): JSX.Element {
@@ -196,11 +197,36 @@ export default function PomodoroTimer(): JSX.Element {
             style={styles.container}
         >
           {renderStreakAlert()}
-          <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+          <View style={styles.timerContainer}>
+            <Svg height="300" width="300" viewBox="0 0 200 200">
+            {/* Background Circle */}
+            <Circle
+                cx="100"
+                cy="100"
+                r="90"
+                stroke="#FFE6D6"
+                strokeWidth="5"
+                fill="none"
+                />
+            {/* Progress Circle */}
+            <Circle
+                cx="100"
+                cy="100"
+                r="90"
+                stroke={PRIMARY_COLOR}
+                strokeWidth="5"
+                fill="none"
+                strokeDasharray={Math.PI * 2 * 90} // Full circle length
+                strokeDashoffset={(1 - timeLeft / (duration * 60)) * Math.PI * 2 * 90} // Increases to erase the stroke
+                strokeLinecap="round"
+            />
+            </Svg>
+            <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+        </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
               style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
-              onPress={() => startTimer(0.05)}
+              onPress={() => startTimer(1)}
               disabled={isRunning && !isPaused}
             >
               <Icon name="timer-outline" size={20} color="#fff" />
@@ -222,7 +248,7 @@ export default function PomodoroTimer(): JSX.Element {
                 onPress={pauseTimer}
               >
                 <Icon name="pause-outline" size={20} color="#fff" />
-                <Text style={styles.controlButtonText}>Pause</Text>
+                {/* <Text style={styles.controlButtonText}>Pause</Text> */}
               </TouchableOpacity>
             )}
             {isPaused && (
@@ -231,7 +257,7 @@ export default function PomodoroTimer(): JSX.Element {
                 onPress={resumeTimer}
               >
                 <Icon name="play-outline" size={20} color="#fff" />
-                <Text style={styles.controlButtonText}>Resume</Text>
+                {/* <Text style={styles.controlButtonText}>Resume</Text> */}
               </TouchableOpacity>
             )}
           </View>
