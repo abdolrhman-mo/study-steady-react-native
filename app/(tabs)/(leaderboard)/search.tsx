@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     },
     customHeader: {
         padding: 16,
-        backgroundColor: '#e0f7fa',
+        // backgroundColor: '#e0f7fa',
     },
     searchInput: {
         height: 40,
