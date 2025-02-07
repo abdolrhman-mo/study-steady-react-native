@@ -11,14 +11,16 @@ import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS } from '@/constants/colors';
+import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors';
 import AppText from '@/components/app-text';
 
 const Leaderboard = () => {
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
-    const followingList = useSelector((state: RootState) => state.following.followingList);
-    const { data, loading, error } = useFetchData(API_ENDPOINTS.FOLLOWING);
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
+    const followingList = useSelector((state: RootState) => state.following.followingList)
+    const followingCount = useSelector((state: RootState) => state.following.followingCount)
+    const followersCount = useSelector((state: RootState) => state.following.followersCount)
+    const { data: followingListData, loading: followingListLoading, error: followingListError } = useFetchData(API_ENDPOINTS.FOLLOWING)
 
     const [searchQuery, setSearchQuery] = useState('');
     const [userData, setUserData] = useState<any>(null);
@@ -38,23 +40,27 @@ const Leaderboard = () => {
 
     // Sync Redux state with fetched data
     useEffect(() => {
-        if (data) {
-            dispatch(setFollowingList(data));
+        if (followingListData && userData) {
+            dispatch(setFollowingList({ 
+                followingList: followingListData, 
+                followersCount: userData.followers_count, 
+                followingCount: userData.following_count 
+            }));
         }
-    }, [data, dispatch]);
+    }, [followingListData, dispatch, userData]);
 
-    if (loading) {
+    if (followingListLoading) {
         return (
-        <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#E87C39" />
-        </View>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#E87C39" />
+            </View>
         );
     }
   
-    if (error)
+    if (followingListError)
         return (
             <View style={styles.center}>
-                <AppText style={styles.errorText}>Error: {error}</AppText>
+                <AppText style={styles.errorText}>Error: {followingListError}</AppText>
             </View>
         );
         
@@ -72,6 +78,7 @@ const Leaderboard = () => {
     //         </View>
     //     </View>
     // );
+
     const renderItem = ({ item }: { item: any }) => (
         <Link style={styles.tableRow}  href={{ pathname: '/user/[id]', params: { id: item.id } }}>
             <AppText style={styles.rowText}>{item.username}</AppText>
@@ -85,6 +92,7 @@ const Leaderboard = () => {
     const filteredList = followingList?.filter((user: any) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
     return (
         <LinearGradient
             colors={GRADIENT_COLORS}
@@ -108,17 +116,17 @@ const Leaderboard = () => {
                     </View>
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
                         <AppText style={styles.infoLabel}>Followers</AppText>
-                        <AppText style={styles.infoText}>25</AppText>
+                        <AppText style={styles.infoText}>{followersCount}</AppText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.infoBlock} onPress={() => router.push('/FollowersFollowing')}>
                         <AppText style={styles.infoLabel}>Following</AppText>
-                        <AppText style={styles.infoText}>10</AppText>
+                        <AppText style={styles.infoText}>{followingCount}</AppText>
                     </TouchableOpacity>
                 </View>
             )}
     
             
-            {filteredList?.length > 0 ? (
+            {((filteredList?.length > 0) && filteredList) ? (
                 // {/* Leaderboard Title */}
                 <>
                     <AppText style={styles.leaderboardTitle}>Following</AppText>
@@ -143,7 +151,17 @@ const Leaderboard = () => {
                         You haven't followed anyone yet. Start following users to see their scores here!
                     </AppText>
                     <Link href={'/search'}>
-                        <Button title="Search for friends to follow" color={'#E87C39'}/>
+                        <TouchableOpacity 
+                            style={{
+                                backgroundColor: PRIMARY_COLOR,
+                                paddingVertical: 10,
+                                paddingHorizontal: 20,
+                                borderRadius: 25, // Adjust as needed
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={{ color: 'white', fontSize: 16 }}>Search for friends to follow</Text>
+                        </TouchableOpacity>
                     </Link>
                 </View>
             )}

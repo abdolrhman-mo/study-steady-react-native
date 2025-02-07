@@ -47,7 +47,7 @@ export default function PomodoroTimer(): JSX.Element {
                 
                 if (response.data.current_streak === 0 && response.data.top_streak === 0) {
                     setStreak(0)
-                    console.log(streak)
+                    // console.log(streak)
                 }
             } else {
                 throw new Error('ID not found')
@@ -171,7 +171,7 @@ export default function PomodoroTimer(): JSX.Element {
             <View style={styles.alertContainer}>
               <View style={styles.alert}>
                 <AppText style={styles.alertText}>Start the timer and study to begin your streak!</AppText>
-                <Icon name="trophy" size={20} color="#F7AC00" style={styles.icon} />
+                <Icon name="flame" size={20} color="#ff4500" style={styles.icon} />
                 <TouchableOpacity
                   style={styles.alertCloseButton}
                   onPress={() => setStreak(1)}

@@ -116,18 +116,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   alert: {
-    backgroundColor: '#f8d7da',
+    backgroundColor: '#d4edda', // Light green background for encouragement
     padding: 15,
     borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },
   alertText: {
-    color: '#721c24',
+    color: '#155724', // Dark green text for positive emphasis
     marginRight: 10,
   },
   alertCloseButton: {
-    backgroundColor: '#721c24',
+    backgroundColor: '#155724', // Matching dark green close button
     padding: 5,
     borderRadius: 50,
   },  

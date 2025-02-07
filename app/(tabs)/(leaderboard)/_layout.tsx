@@ -7,12 +7,12 @@ export default function Layout() {
         <Stack
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: '#e0f7fa',
+                    // backgroundColor: '#e0f7fa',
                 },
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerShown: false,
+                // headerShown: false,
             }}
         >
             <Stack.Screen
