@@ -9,6 +9,7 @@ import { followUser, unfollowUser } from '@/redux/followingSlice'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENT_COLORS } from '@/constants/colors'
 import AppText from '@/components/app-text'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const User = () => {
   const dispatch = useDispatch()
@@ -98,7 +99,10 @@ const User = () => {
         style={styles.container}
     >
       <AppText style={styles.title}>{userData.username}</AppText>
-      <AppText style={styles.streak}>Top Streak: {userData.top_streak}</AppText>
+      <AppText style={styles.streak}>
+            <Icon name="trophy" size={20} color="#FFD700" style={styles.trophyIcon} />
+            Top Streak: {userData.top_streak}
+      </AppText>
       <TouchableOpacity
         style={following ? styles.unfollowButton : styles.followButton}
         onPress={handleFollowToggle}
@@ -153,6 +157,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  trophyIcon: {
+    marginHorizontal: 5, // Adds space between the trophy and the score
   },
 })
 

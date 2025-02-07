@@ -11,8 +11,9 @@ import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GRADIENT_COLORS, PRIMARY_COLOR } from '@/constants/colors';
+import { GRADIENT_COLORS, PRIMARY_COLOR, SECONDARY_COLOR } from '@/constants/colors';
 import AppText from '@/components/app-text';
+import { shadowStyle } from '@/styles/styles';
 
 const Leaderboard = () => {
     const navigation = useNavigation()
@@ -83,7 +84,7 @@ const Leaderboard = () => {
         <Link style={styles.tableRow}  href={{ pathname: '/user/[id]', params: { id: item.id } }}>
             <AppText style={styles.rowText}>{item.username}</AppText>
             <View style={styles.streakContainer}>
-                <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
+                <Icon name="trophy" size={20} color="#FFD700" style={styles.trophyIcon} />
                 <AppText style={styles.rowText}>{item.top_streak}</AppText>
             </View>
         </Link>
@@ -109,7 +110,7 @@ const Leaderboard = () => {
     
             {/* Personal-Info Box */}
             {userData && (
-                <View style={styles.personalInfo}>
+                <View style={[styles.personalInfo, shadowStyle.default]}>
                     <View style={styles.infoBlock}>
                         <Icon name="person-circle-outline" size={50} color="#E87C39" />
                         <AppText style={styles.infoText}>{userData.username}</AppText>
@@ -128,7 +129,7 @@ const Leaderboard = () => {
             
             {((filteredList?.length > 0) && filteredList) ? (
                 // {/* Leaderboard Title */}
-                <>
+                <View style={shadowStyle.default}>
                     <AppText style={styles.leaderboardTitle}>Following</AppText>
             
                     {/* Table Header */}
@@ -138,13 +139,13 @@ const Leaderboard = () => {
                     </View>
             
                     {/* Table Body */}
-                        <FlatList
-                            data={filteredList}
-                            renderItem={renderItem}
-                            keyExtractor={(item: any) => item.id.toString()}
-                            contentContainerStyle={styles.tableBody}
-                        />
-                </>
+                    <FlatList
+                        data={filteredList}
+                        renderItem={renderItem}
+                        keyExtractor={(item: any) => item.id.toString()}
+                        contentContainerStyle={styles.tableBody}
+                    />
+                </View>
             ) : (
                 <View style={styles.center}>
                     <AppText style={styles.noFollowingMessage} >
@@ -169,8 +170,8 @@ const Leaderboard = () => {
     );
 };
 const COLORS = {
-    primary: '#E87C39',
-    secondary: '#F6DECF',
+    primary: PRIMARY_COLOR,
+    secondary: SECONDARY_COLOR,
     background: '#e0f7fa',
     textPrimary: '#333',
     textSecondary: '#444',
