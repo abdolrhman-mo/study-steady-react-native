@@ -15,7 +15,7 @@ export default function RootLayout() {
 
     const [fontsLoaded] = useFonts({
         Poppins_Regular: Poppins_400Regular,
-        // Poppins_Bold: Poppins_700Bold,
+        Poppins_Bold: Poppins_700Bold,
     })
     
       useEffect(() => {

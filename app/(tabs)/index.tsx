@@ -219,20 +219,20 @@ export default function PomodoroTimer(): JSX.Element {
         </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
-              style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
-              onPress={() => startTimer(1)}
+              style={[styles.minsButton, isRunning && !isPaused && styles.disabledButton]}
+              onPress={() => startTimer(25)}
               disabled={isRunning && !isPaused}
             >
-              <Icon name="timer-outline" size={20} color="#fff" />
-              <AppText style={styles.buttonText}>25 minutes</AppText>
+              <Icon name="timer-outline" size={20} color={PRIMARY_COLOR} />
+              <AppText style={styles.minsButtonText}>25 min</AppText>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.button, isRunning && !isPaused && styles.disabledButton]}
+              style={[styles.minsButton, isRunning && !isPaused && styles.disabledButton]}
               onPress={() => startTimer(50)}
               disabled={isRunning && !isPaused}
             >
-              <Icon name="timer-outline" size={20} color="#fff" />
-              <AppText style={styles.buttonText}>50 minutes</AppText>
+              <Icon name="timer-outline" size={20} color={PRIMARY_COLOR} />
+              <AppText style={styles.minsButtonText}>50 min</AppText>
             </TouchableOpacity>
           </View>
           <View style={styles.controlButtonsContainer}>

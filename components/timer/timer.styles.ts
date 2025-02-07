@@ -1,3 +1,4 @@
+import { PRIMARY_COLOR, SECONDARY_COLOR } from '@/constants/colors';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -37,10 +38,24 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
+      color: '#fff',
+      fontWeight: 'bold',
+      marginLeft: 10,
+    },
+    minsButton: {
+        backgroundColor: SECONDARY_COLOR,
+        padding: 15,
+        borderRadius: 25,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    minsButtonText: {
+        color: PRIMARY_COLOR,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        fontFamily: 'Poppins_Bold',
+        fontSize: 17,
+    },
   controlButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
