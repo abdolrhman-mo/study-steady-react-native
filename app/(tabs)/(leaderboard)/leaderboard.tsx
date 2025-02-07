@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     },
     infoLabel: {
         fontSize: 16,
-        color: COLORS.infoLabel,
+        // color: COLORS.infoLabel,
         fontWeight: 'bold',
     },
     infoText: {
