@@ -5,6 +5,7 @@ import { router } from 'expo-router'
 import apiClient from '@/api/client'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient';
+import { GRADIENT_COLORS } from '@/constants/colors'
 
 
 const Profile = () => {
@@ -44,11 +45,13 @@ const Profile = () => {
   if (!data) return <Text style={styles.errorText}>No data available.</Text> // Translated
 
   return (
-    <View style={styles.container}>
+    <LinearGradient 
+        colors={GRADIENT_COLORS}
+        style={styles.container}
+    >
       {/* Profile Header */}
       <View style={styles.header}>
-        {/* <Icon name="person-circle-outline" size={60} color="#2196F3" /> */}
-        <Icon name="person-circle-outline" size={60} color="#E87C39" />
+        <Icon name="person-circle-outline" size={60} color="#2196F3" />
         <Text style={styles.title}>{data.username}</Text>
       </View>
 
@@ -71,7 +74,7 @@ const Profile = () => {
           <Text style={styles.buttonText}>Account Settings</Text> {/* Translated */}
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -79,9 +82,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#e0f7fa',
-    justifyContent: 'center',
-    marginBottom: 80,
+    // backgroundColor: '#e0f7fa',
   },
   header: {
     flexDirection: 'row',
@@ -92,8 +93,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    // color: '#2196F3',
-    color: '#E87C39',
+    color: '#2196F3',
     marginLeft: 10,
   },
   streakInfo: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     marginBottom: 15,
-    backgroundColor: '#E87C39',
+    backgroundColor: '#2196F3',
     borderRadius: 30,
     width: '70%',
     justifyContent: 'center',

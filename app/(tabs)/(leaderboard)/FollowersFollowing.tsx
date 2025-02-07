@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, TextInput, StyleSheet } from 'react-native';
 import apiClient from '@/api/client';
 import { getId } from '@/utils/tokenStorage';
+import { LinearGradient } from 'expo-linear-gradient';
+import { GRADIENT_COLORS } from '@/constants/colors';
 
 export default function FollowersFollowing() {
   const [data, setData] = useState({ followers: [], following: [] });
@@ -53,7 +55,10 @@ export default function FollowersFollowing() {
   if (error) return <Text>Error: {error}</Text>;
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+        colors={GRADIENT_COLORS}
+        style={styles.container}
+    >
       <View style={styles.tabContainer}>
         {['followers', 'following'].map((tab: any) => (
           <TouchableOpacity key={tab} onPress={() => setActiveTab(tab)}>
@@ -80,12 +85,12 @@ export default function FollowersFollowing() {
           );
         }}
       />
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E0F7FA', padding: 20 },
+  container: { flex: 1, padding: 20 },
   tabContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 },
   searchBar: { height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 10, paddingHorizontal: 10, marginBottom: 15, backgroundColor: '#fff' },
   item: { padding: 10, borderBottomWidth: 1, borderColor: '#ccc' },

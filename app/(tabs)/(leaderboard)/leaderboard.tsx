@@ -10,6 +10,8 @@ import { getId } from '@/utils/tokenStorage';
 import apiClient from '@/api/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { GRADIENT_COLORS } from '@/constants/colors';
 
 const Leaderboard = () => {
     const navigation = useNavigation();
@@ -83,7 +85,10 @@ const Leaderboard = () => {
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={GRADIENT_COLORS}
+            style={styles.container}
+        >
             <Link href="/search">
                 <TextInput
                     style={styles.searchBar}
@@ -140,7 +145,7 @@ const Leaderboard = () => {
                     </Link>
                 </View>
             )}
-        </View>
+        </LinearGradient>
     );
 };
 const COLORS = {
@@ -210,7 +215,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: COLORS.background,
     },
     searchBar: {
         height: 40,

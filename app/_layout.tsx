@@ -3,7 +3,8 @@ import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
-import { View, ActivityIndicator } from 'react-native'; // Added import for ActivityIndicator
+import { View, ActivityIndicator, StyleSheet } from 'react-native'; // Added import for ActivityIndicator
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function RootLayout() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);

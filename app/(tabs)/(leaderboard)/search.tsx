@@ -1,5 +1,7 @@
 import { API_ENDPOINTS } from '@/api/endpoints';
 import { useFetchData } from '@/api/hooks/useFetchData';
+import { GRADIENT_COLORS } from '@/constants/colors';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, FlatList, StyleSheet, ActivityIndicator, Text, TouchableOpacity } from 'react-native';
@@ -42,7 +44,10 @@ const SearchFriends = () => {
     if (error) return <Text style={styles.errorText}>Error: {error}</Text>;
 
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={GRADIENT_COLORS}
+            style={styles.container}
+        >
             <View style={styles.customHeader}>
                 <TextInput
                     style={styles.searchInput}
@@ -75,7 +80,7 @@ const SearchFriends = () => {
                     <Text style={styles.leaderboardText}>Go to Leaderboard</Text>
                 </TouchableOpacity>
             </Link>
-        </View>
+        </LinearGradient>
     );
 };
 
@@ -83,7 +88,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: '#e0f7fa',
     },
     customHeader: {
         padding: 16,

@@ -7,6 +7,8 @@ import { Link, router } from 'expo-router'
 import { useSignup } from '@/api/hooks/useAuth'
 import { Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { LinearGradient } from 'expo-linear-gradient'
+import { GRADIENT_COLORS } from '@/constants/colors'
 
 export default function SignupScreen() {
   const [firstName, setFirstName] = useState('')
@@ -33,7 +35,10 @@ export default function SignupScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+        colors={GRADIENT_COLORS}
+        style={styles.container}
+    >
       <Text style={styles.title}>Create an Account</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: '7px' }}>
         <View style={{ flex: 1 }}>
@@ -70,7 +75,7 @@ export default function SignupScreen() {
       <Link href="/login" style={styles.link}>
         Already have an account? Login
       </Link>
-    </View>
+    </LinearGradient>
   )
 }
 

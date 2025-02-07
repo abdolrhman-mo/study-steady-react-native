@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, ActivityIndicator } fr
 import { getId, getToken } from '@/utils/tokenStorage'
 import { router } from 'expo-router'
 import apiClient from '@/api/client'
+import { LinearGradient } from 'expo-linear-gradient'
+import { GRADIENT_COLORS } from '@/constants/colors'
 
 const Profile = () => {
   const [data, setData] = useState<any>(null)
@@ -63,7 +65,10 @@ const Profile = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+        colors={GRADIENT_COLORS}
+        style={styles.container}
+    >
       <Text style={styles.streak}>Here you can log out.</Text>
 
       {/* Button wrapped in TouchableOpacity */}
@@ -100,7 +105,7 @@ const Profile = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -109,7 +114,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0f7fa',
   },
   title: {
     fontSize: 24,

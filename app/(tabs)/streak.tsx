@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setCurrentStreak, setTopStreak } from '@/redux/streakSlice';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { GRADIENT_COLORS } from '@/constants/colors';
 
 export default function StreakScreen(): JSX.Element {
     const dispatch = useDispatch();
@@ -50,7 +52,10 @@ export default function StreakScreen(): JSX.Element {
     if (!data) return <Text>No data available.</Text>;
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#e0f7fa' }}>
+        <LinearGradient
+            colors={GRADIENT_COLORS}
+            style={styles.container}
+        >
             <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
                 <Ionicons name="flame" size={100} color="#ff4500" />
             </View>
@@ -67,11 +72,16 @@ export default function StreakScreen(): JSX.Element {
                     Total Study Hours: 54 hours
                 </Text>
             </View>
-        </View>
+        </LinearGradient>
     );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     trophyIcon: {
         marginHorizontal: 5, // Adds space between the trophy and the score
     },

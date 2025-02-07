@@ -9,6 +9,8 @@ import { getId } from '@/utils/tokenStorage'
 import apiClient from '@/api/client'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentStreak, setTopStreak, updateCurrentStreak } from '@/redux/streakSlice';
+import { LinearGradient } from 'expo-linear-gradient';
+import { GRADIENT_COLORS } from '@/constants/colors';
 
 
 export default function PomodoroTimer(): JSX.Element {
@@ -189,7 +191,10 @@ export default function PomodoroTimer(): JSX.Element {
       }
     
       return (
-        <View style={styles.container}>
+        <LinearGradient 
+            colors={GRADIENT_COLORS}
+            style={styles.container}
+        >
           {renderStreakAlert()}
           <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
           <View style={styles.buttonsContainer}>
@@ -298,6 +303,6 @@ export default function PomodoroTimer(): JSX.Element {
               </View>
             </View>
           </Modal>
-        </View>
+        </LinearGradient>
       )
 }

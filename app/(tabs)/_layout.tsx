@@ -1,12 +1,14 @@
 import { Link, Tabs, Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, Image, ActivityIndicator } from 'react-native'; // Added ActivityIndicator import
+import { View, Text, Image, ActivityIndicator, StyleSheet } from 'react-native'; // Added ActivityIndicator import
 import { getId } from '@/utils/tokenStorage';
 import { useEffect, useState } from 'react';
 import apiClient from '@/api/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setCurrentStreak } from '@/redux/streakSlice';
+import { LinearGradient } from 'expo-linear-gradient';
+import { GRADIENT_COLORS } from '@/constants/colors';
 
 const hasOneDayPassed = (apiDateString: string) => {
   const apiDate = new Date(apiDateString); // Convert API string to Date object
@@ -138,3 +140,11 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      // backgroundColor: '#e0f7fa',
+    },
+  })

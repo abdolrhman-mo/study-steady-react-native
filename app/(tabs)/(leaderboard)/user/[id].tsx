@@ -6,6 +6,8 @@ import apiClient from '@/api/client'
 import { API_ENDPOINTS } from '@/api/endpoints'
 import { useDispatch } from 'react-redux'
 import { followUser, unfollowUser } from '@/redux/followingSlice'
+import { LinearGradient } from 'expo-linear-gradient'
+import { GRADIENT_COLORS } from '@/constants/colors'
 
 const User = () => {
   const dispatch = useDispatch()
@@ -90,7 +92,10 @@ const User = () => {
   if (!userData) return <Text>No data available.</Text>
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+        colors={GRADIENT_COLORS}
+        style={styles.container}
+    >
       <Text style={styles.title}>{userData.username}</Text>
       <Text style={styles.streak}>Top Streak: {userData.top_streak}</Text>
       <TouchableOpacity
@@ -106,7 +111,7 @@ const User = () => {
             : 'Follow'}
         </Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -115,7 +120,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0f7fa',
   },
   title: {
     fontSize: 24,
