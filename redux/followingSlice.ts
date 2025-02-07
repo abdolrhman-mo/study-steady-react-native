@@ -27,7 +27,7 @@ const followingSlice = createSlice({
                     username: user.following.username,
                     top_streak: user.following.top_streak,
                 });
-                console.log('followingSlice.ts setFollowingList:', user.following);
+                console.log('followingSlice.ts setFollowingList:', user.following.username);
             });
 
             // Sort the followingList by top_streak in descending order

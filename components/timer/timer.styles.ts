@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   button: {
     backgroundColor: '#E87C39',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   controlButton: {
     backgroundColor: '#E87C39',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },

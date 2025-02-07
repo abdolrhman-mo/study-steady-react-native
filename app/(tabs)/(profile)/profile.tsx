@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'rea
 import { getId } from '@/utils/tokenStorage'
 import { router } from 'expo-router'
 import apiClient from '@/api/client'
-import Icon from 'react-native-vector-icons/Ionicons'  // Importing Ionicons icon library
+import Icon from 'react-native-vector-icons/Ionicons'
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 const Profile = () => {
   const [data, setData] = useState<any>(null)
