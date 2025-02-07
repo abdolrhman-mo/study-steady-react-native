@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   },
   controlButtonText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '900',
     marginLeft: 10,
     borderRadius: 25,
   },

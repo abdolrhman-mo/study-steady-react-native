@@ -247,7 +247,7 @@ export default function PomodoroTimer(): JSX.Element {
                 style={styles.controlButton}
                 onPress={pauseTimer}
               >
-                <Icon name="pause-outline" size={20} color="#fff" />
+                <Icon name="pause" size={20} color="#fff" />
                 {/* <Text style={styles.controlButtonText}>Pause</Text> */}
               </TouchableOpacity>
             )}
@@ -256,7 +256,7 @@ export default function PomodoroTimer(): JSX.Element {
                 style={styles.controlButton}
                 onPress={resumeTimer}
               >
-                <Icon name="play-outline" size={20} color="#fff" />
+                <Icon name="play" size={20} color="#fff" />
                 {/* <Text style={styles.controlButtonText}>Resume</Text> */}
               </TouchableOpacity>
             )}
