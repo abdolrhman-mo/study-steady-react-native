@@ -7,8 +7,11 @@ import apiClient from '@/api/client'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENT_COLORS } from '@/constants/colors'
 import AppText from '@/components/app-text'
+import { useDispatch } from 'react-redux'
+import { resetState } from '@/redux/store'
 
 const Profile = () => {
+  const dispatch = useDispatch()
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -52,13 +55,18 @@ const Profile = () => {
   if (!data) return <AppText style={styles.errorText}>No data available.</AppText>
 
   const handleLogout = async () => {
-    logoutUser()
-    console.log('Profile: Logged out')
-
-    const token = await getToken()
-    console.log('Profile token:', token)
-
+    
+    dispatch(resetState()) // Clears Redux global state
+    logoutUser()           // Logs out user
     router.replace('/login')
+    
+    // logoutUser()
+    // console.log('Profile: Logged out')
+
+    // const token = await getToken()
+    // console.log('Profile token:', token)
+
+    // router.replace('/login')
   }
 
   const confirmLogout = () => {

@@ -43,6 +43,9 @@ const followingSlice = createSlice({
             state.followingCount = followingCount;
 
         },
+        deleteFollowingList: (state) => {
+            state.followingList = [];
+        },
         followUser: (state, action: PayloadAction<any>) => {
             // Add the new user to the list
             state.followingList.push(action.payload);

@@ -47,7 +47,7 @@ const Profile = () => {
     fetchData()
   }, [])
 
-  if (loading) {
+  if (loading || !fontLoaded) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={PRIMARY_COLOR} />
@@ -59,6 +59,7 @@ const Profile = () => {
   if (!data) return <AppText style={styles.errorText}>No data available.</AppText> // Translated
 
   return (
+    // <View>
     <LinearGradient 
         colors={GRADIENT_COLORS}
         style={styles.container}
@@ -89,6 +90,8 @@ const Profile = () => {
         </TouchableOpacity>
       </View>
     </LinearGradient>
+    // {/* </View> */}
+  
   )
 }
 
@@ -107,10 +110,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: PRIMARY_COLOR,
     marginLeft: 10,
     fontFamily: 'Poppins_400Regular'
+    // fontFamily: 'Poppins_Regular'
   },
   streakInfo: {
     marginBottom: 30,
@@ -146,7 +150,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 16,
   },
   centered: {

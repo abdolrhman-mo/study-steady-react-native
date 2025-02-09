@@ -171,8 +171,10 @@ export default function PomodoroTimer(): JSX.Element {
           return (
             <View style={styles.alertContainer}>
               <View style={[styles.alert, shadowStyle.default]}>
-                <AppText style={styles.alertText}>Start the timer and study to begin your streak!</AppText>
-                <Icon name="flame" size={20} color="#ff4500" style={styles.icon} />
+                <AppText style={styles.alertText}>
+                    Start the timer and study to begin your streak!
+                    <Icon name="flame" size={20} color="#ff4500" style={styles.icon} />
+                </AppText>
                 <TouchableOpacity
                   style={styles.alertCloseButton}
                   onPress={() => setStreak(1)}

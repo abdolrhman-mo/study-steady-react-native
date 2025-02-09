@@ -63,30 +63,20 @@ const Leaderboard = () => {
             </View>
         );
         
-    // const renderItem = ({ item }: { item: any }) => (
-    //     <View style={styles.item}>
-    //         <Link
-    //             href={{ pathname: '/user/[id]', params: { id: item.id } }}
-    //             style={styles.link}
-    //         >
-    //             <AppText style={styles.name}>{item.username}</AppText>
-    //         </Link>
-    //         <View style={styles.streakContainer}>
-    //             <Icon name="trophy-outline" size={20} color="#FFD700" style={styles.trophyIcon} />
-    //             <AppText style={styles.score}>{item.top_streak}</AppText>
-    //         </View>
-    //     </View>
-    // );
-
-    const renderItem = ({ item }: { item: any }) => (
-        <Link style={styles.tableRow}  href={{ pathname: '/user/[id]', params: { id: item.id } }}>
+    
+    const renderItem = ({ item }: { item: any }) => {
+        const handlePress = () => {
+            router.push(`/user/${item.id}`)
+        }
+        return (
+        <TouchableOpacity onPress={handlePress} style={styles.tableRow}>
             <AppText style={styles.rowText}>{item.username}</AppText>
             <View style={styles.streakContainer}>
                 <Icon name="trophy" size={20} color={TROPHY_COLOR} style={styles.trophyIcon} />
                 <AppText style={styles.rowText}>{item.top_streak}</AppText>
             </View>
-        </Link>
-    );
+        </TouchableOpacity>
+    )};
 
     const filteredList = followingList?.filter((user: any) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
@@ -97,14 +87,15 @@ const Leaderboard = () => {
             colors={GRADIENT_COLORS}
             style={styles.container}
         >
-            <Link href="/search">
-                <TextInput
-                    style={styles.searchBar}
-                    placeholder="Search for friends"
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                />
-            </Link>
+            {/* <TextInput
+                style={styles.searchBar}
+                placeholder="Search for friends"
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+            /> */}
+            <TouchableOpacity style={styles.searchBar} onPress={() => router.push('/search')}>
+                <Text style={{ fontSize: 14 , paddingTop: 9, opacity: 0.95 }}>Search for friends</Text>
+            </TouchableOpacity>
     
             {/* Personal-Info Box */}
             {userData && (
@@ -149,19 +140,18 @@ const Leaderboard = () => {
                     <AppText style={styles.noFollowingMessage} >
                         You haven't followed anyone yet. Start following users to see their scores here!
                     </AppText>
-                    <Link href={'/search'}>
-                        <TouchableOpacity 
-                            style={{
-                                backgroundColor: PRIMARY_COLOR,
-                                paddingVertical: 10,
-                                paddingHorizontal: 20,
-                                borderRadius: 25, // Adjust as needed
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Text style={{ color: 'white', fontSize: 16 }}>Search for friends to follow</Text>
-                        </TouchableOpacity>
-                    </Link>
+                    <TouchableOpacity 
+                        style={{
+                            backgroundColor: PRIMARY_COLOR,
+                            paddingVertical: 10,
+                            paddingHorizontal: 20,
+                            borderRadius: 25, // Adjust as needed
+                            alignItems: 'center',
+                        }}
+                        onPress={() => router.push('/search')}
+                    >
+                        <Text style={{ color: 'white', fontSize: 16 }}>Search for friends to follow</Text>
+                    </TouchableOpacity>
                 </View>
             )}
         </LinearGradient>

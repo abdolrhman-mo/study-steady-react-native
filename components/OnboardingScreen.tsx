@@ -40,7 +40,6 @@ export default function OnboardingScreen() {
   const [showHome, setShowHome] = useState<boolean>(false)
 
   const handleDone = async () => {
-    await AsyncStorage.setItem('onboardingCompleted', 'true')
     router.replace('/')
   }
 

@@ -123,9 +123,9 @@ export const styles = StyleSheet.create({
   },
   alertContainer: {
     position: 'absolute',
-    top: 20,
-    left: 0,
-    right: 0,
+    top: 5,
+    left: 12,
+    right: 12,
     padding: 10,
     zIndex: 999,
     alignItems: 'center',
@@ -147,7 +147,9 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
   },  
   icon: {
-    marginRight: 10,
+    // marginRight: 10,
+    top: 5,
+    left: 3,
   },
   loadingContainer: {
     flex: 1,
