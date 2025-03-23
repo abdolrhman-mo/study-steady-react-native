@@ -10,12 +10,36 @@ const initialState: StreakState = {
   topStreak: 0,
 }
 
+const getDaysPassed = (apiDateString: string) => {
+    const apiDate = new Date(apiDateString); // Convert API string to Date object
+    const currentDate = new Date();
+
+    
+    // Get time difference in milliseconds
+    const timeDifference = currentDate.getTime() - apiDate.getTime();
+
+    
+    // Convert milliseconds to days
+    const daysPassed = timeDifference / (1000 * 60 * 60 * 24);
+    
+    // console.log('streakSlice daysPassed', daysPassed)
+  
+    return daysPassed
+};
+
 const streakSlice = createSlice({
   name: "streak",
   initialState,
   reducers: {
-    setCurrentStreak: (state, action: PayloadAction<number>) => {
-      state.currentStreak = action.payload
+    setCurrentStreak: (state, action: PayloadAction<{ currentStreak: number, lastStudyDate: string }>) => {
+        const lastStudyDate = action.payload.lastStudyDate
+        const daysPassed = getDaysPassed(lastStudyDate)
+
+        if (daysPassed > 2) {
+            state.currentStreak = 0
+        } else {
+            state.currentStreak = action.payload.currentStreak
+        }
     },
     updateCurrentStreak: (state, action: PayloadAction<number>) => {
       // if response.current_streak > currentStreak

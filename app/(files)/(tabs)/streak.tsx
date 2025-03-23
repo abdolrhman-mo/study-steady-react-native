@@ -29,13 +29,18 @@ export default function StreakScreen(): JSX.Element {
                     const response = await apiClient.get(`/api-auth/${id}/`);
                     setData(response.data);
 
-                    dispatch(setCurrentStreak(response.data.current_streak));
+                    dispatch(setCurrentStreak({ currentStreak: response.data.current_streak, lastStudyDate: response.data.last_study_date }));
                     dispatch(setTopStreak(response.data.top_streak));
                 } else {
                     throw new Error('ID not found');
                 }
             } catch (err: any) {
+                // console.log('streak err', err)
                 setError(err.message);
+
+                if (err.code == "ERR_NETWORK") {
+                    
+                }
             } finally {
                 setLoading(false);
             }
@@ -52,7 +57,7 @@ export default function StreakScreen(): JSX.Element {
         );
 
     if (error) return <AppText>Error: {error}</AppText>;
-    if (!data) return <AppText>No data available.</AppText>;
+    // if (!data) return <AppText>No data available.</AppText>;
 
     return (
         <LinearGradient colors={GRADIENT_COLORS} style={styles.container}>
@@ -73,35 +78,33 @@ export default function StreakScreen(): JSX.Element {
             </View>
 
 
-        {/* Quick Streak Guide */}
-        <View style={styles.infoContainer}>
-        <AppText style={styles.infoTitle}>Streak Guide</AppText>
-        <View style={styles.badgeRow}>
-            <View style={[styles.badge, 
-                // { backgroundColor: STREAK_COLOR_L1 }
-                { backgroundColor: '#FCD8BF' }
-            ]}>
-            <Ionicons name="flame" size={16} color={STREAK_COLOR_L1} />
-            <AppText style={styles.badgeText}>25 – 60 m</AppText>
+            {/* Quick Streak Guide */}
+            <View style={styles.infoContainer}>
+                <AppText style={styles.infoTitle}>Streak Guide</AppText>
+                <View style={styles.badgeRow}>
+                    <View style={[styles.badge, 
+                        // { backgroundColor: STREAK_COLOR_L1 }
+                        { backgroundColor: '#FCD8BF' }
+                    ]}>
+                        <Ionicons name="flame" size={16} color={STREAK_COLOR_L1} />
+                        <AppText style={styles.badgeText}>25 – 60 m</AppText>
+                    </View>
+                    <View style={[styles.badge, 
+                        // { backgroundColor: STREAK_COLOR_L2 }
+                        { backgroundColor: '#FCD8BF' }
+                    ]}>
+                        <Ionicons name="flame" size={16} color={STREAK_COLOR_L2} />
+                        <AppText style={styles.badgeText}>2 h+</AppText>
+                    </View>
+                    <View style={[styles.badge, 
+                            // { backgroundColor: STREAK_COLOR_L3 }
+                            { backgroundColor: '#FCD8BF' }
+                            ]}>
+                        <Ionicons name="flame" size={16} color={STREAK_COLOR_L3} />
+                        <AppText style={styles.badgeText}>4 h+</AppText>
+                    </View>
+                </View>
             </View>
-            <View style={[styles.badge, 
-                // { backgroundColor: STREAK_COLOR_L2 }
-                { backgroundColor: '#FCD8BF' }
-            ]}>
-            <Ionicons name="flame" size={16} color={STREAK_COLOR_L2} />
-            <AppText style={styles.badgeText}>2 h+</AppText>
-            </View>
-            <View style={[styles.badge, 
-                // { backgroundColor: STREAK_COLOR_L3 }
-                { backgroundColor: '#FCD8BF' }
-                ]}>
-            <Ionicons name="flame" size={16} color={STREAK_COLOR_L3} />
-            <AppText style={styles.badgeText}>4 h+</AppText>
-            </View>
-        </View>
-        </View>
-
-
         </LinearGradient>
     );
 }

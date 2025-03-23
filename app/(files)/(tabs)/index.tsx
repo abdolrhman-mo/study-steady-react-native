@@ -43,7 +43,7 @@ export default function PomodoroTimer(): JSX.Element {
                 const response = await apiClient.get(`/api-auth/${id}/`)
                 setUserData(response.data)
 
-                dispatch(setCurrentStreak(Number(response.data.current_streak)))
+                dispatch(setCurrentStreak({ currentStreak: response.data.current_streak, lastStudyDate: response.data.last_study_date }))
                 dispatch(setTopStreak(Number(response.data.top_streak)))
                 
                 if (response.data.current_streak === 0 && response.data.top_streak === 0) {

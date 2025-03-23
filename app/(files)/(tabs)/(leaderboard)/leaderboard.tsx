@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { GRADIENT_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, TROPHY_COLOR, WHITE } from '@/constants/colors';
 import AppText from '@/components/app-text';
 import { shadowStyle } from '@/styles/styles';
+import Error from '@/components/error-view';
 
 const Leaderboard = () => {
     const dispatch = useDispatch()
@@ -21,17 +22,24 @@ const Leaderboard = () => {
     const followersCount = useSelector((state: RootState) => state.following.followersCount)
     const { data: followingListData, loading: followingListLoading, error: followingListError } = useFetchData(API_ENDPOINTS.FOLLOWING)
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [userData, setUserData] = useState<any>(null);
+    const [userData, setUserData] = useState<any>(null)
+    const [userLoading, setUserLoading] = useState<boolean>(true)
+    const [userError, setUserError] = useState<string | null>(null)
 
     // Fetch user info
     useEffect(() => {
         const fetchUserData = async () => {
-            const id = await getId();
-            if (id) {
-                const response = await apiClient.get(`/api-auth/${id}/`);
-                setUserData(response.data);
-                console.log('leaderboard user data', response.data);
+            try {
+                const id = await getId();
+                if (id) {
+                    const response = await apiClient.get(`/api-auth/${id}/`);
+                    setUserData(response.data);
+                    console.log('leaderboard user data', response.data);
+                }
+            } catch (err: any) {
+                setUserError(err.message)
+            } finally {
+                setUserLoading(false)
             }
         };
         fetchUserData();
@@ -40,28 +48,29 @@ const Leaderboard = () => {
     // Sync Redux state with fetched data
     useEffect(() => {
         if (followingListData && userData) {
-            dispatch(setFollowingList({ 
+            dispatch(setFollowingList({
                 followingList: followingListData, 
-                followersCount: userData.followers_count, 
-                followingCount: userData.following_count 
+                followersCount: userData.followers_count,
+                followingCount: userData.following_count
             }));
         }
     }, [followingListData, dispatch, userData]);
 
-    if (followingListLoading) {
+    if (followingListLoading || userLoading)
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#E87C39" />
             </View>
         );
-    }
   
     if (followingListError)
         return (
-            <View style={styles.center}>
-                <AppText style={styles.errorText}>Error: {followingListError}</AppText>
-            </View>
-        );
+            <Error error={followingListError} />
+        )
+    if (userError)
+        return (
+            <Error error={userError} />
+        )
         
     
     const renderItem = ({ item }: { item: any }) => {
@@ -69,18 +78,15 @@ const Leaderboard = () => {
             router.push(`/user/${item.id}`)
         }
         return (
-        <TouchableOpacity onPress={handlePress} style={styles.tableRow}>
-            <AppText style={styles.rowText}>{item.username}</AppText>
-            <View style={styles.streakContainer}>
-                <Icon name="trophy" size={20} color={TROPHY_COLOR} style={styles.trophyIcon} />
-                <AppText style={styles.rowText}>{item.top_streak}</AppText>
-            </View>
-        </TouchableOpacity>
-    )};
-
-    const filteredList = followingList?.filter((user: any) =>
-        user.username.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+            <TouchableOpacity onPress={handlePress} style={styles.tableRow}>
+                <AppText style={styles.rowText}>{item.username}</AppText>
+                <View style={styles.streakContainer}>
+                    <Icon name="trophy" size={20} color={TROPHY_COLOR} style={styles.trophyIcon} />
+                    <AppText style={styles.rowText}>{item.top_streak}</AppText>
+                </View>
+            </TouchableOpacity>
+        )
+    };
 
     return (
         <LinearGradient
@@ -116,7 +122,7 @@ const Leaderboard = () => {
             )}
     
             
-            {((filteredList?.length > 0) && filteredList) ? (
+            {((followingList?.length > 0) && followingList) ? (
                 // {/* Leaderboard Title */}
                 <View style={shadowStyle.default}>
                     <AppText style={styles.leaderboardTitle}>Following</AppText>
@@ -129,7 +135,7 @@ const Leaderboard = () => {
             
                     {/* Table Body */}
                     <FlatList
-                        data={filteredList}
+                        data={followingList}
                         renderItem={renderItem}
                         keyExtractor={(item: any) => item.id.toString()}
                         contentContainerStyle={styles.tableBody}
@@ -166,7 +172,6 @@ const COLORS = {
     textMuted: '#888',
     white: '#fff',
     border: '#ccc',
-    error: '#d32f2f',
     infoLabel: '#00796b',
 };
 
@@ -275,11 +280,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    errorText: {
-        fontSize: 16,
-        color: COLORS.error,
-        marginBottom: 10,
     },
     streakContainer: {
         flexDirection: 'row',

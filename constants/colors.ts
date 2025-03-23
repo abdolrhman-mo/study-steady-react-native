@@ -10,3 +10,5 @@ export const STREAK_COLOR_L2 = '#A93B68'
 export const STREAK_COLOR_L3 = 'red'
 export const TROPHY_COLOR = "#F2B82B"
 export const WHITE = '#F6F5F2'
+
+export const ERROR_COLOR = '#d32f2f'

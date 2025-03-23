@@ -12,7 +12,7 @@ export const saveToken = async (token: string): Promise<void> => {
     } else {
         await SecureStore.setItemAsync(TOKEN_KEY, token);
     }
-    console.log('tokenStorage getToken():', await getToken());
+    // console.log('tokenStorage getToken():', await getToken());
 };
 
 export const getToken = async (): Promise<string | null> => {
@@ -37,7 +37,7 @@ export const saveId = async (id: number): Promise<void> => {
     } else {
         await SecureStore.setItemAsync('ID', id.toString());
     }
-    console.log('tokenStorage getId():', await getId());
+    // console.log('tokenStorage getId():', await getId());
 };
 
 export const getId = async (): Promise<number | null> => {
@@ -58,12 +58,43 @@ export const deleteId = async (): Promise<void> => {
     } else {
         await SecureStore.deleteItemAsync('ID');
     }
-};
+}
 
-// export const deleteOnboardingCompleted = async (): Promise<void> => {
-//     if (isWeb) {
-//         await AsyncStorage.removeItem('ID');
-//     } else {
-//         await SecureStore.deleteItemAsync('ID');
-//     }
-// };
+export const saveUserData = async (userData: any): Promise<void> => {
+    console.log('Saving userData:', userData)
+    
+    const userDataString = JSON.stringify(userData)
+
+    if (isWeb) {
+        await AsyncStorage.setItem('userData', userDataString)
+    } else {
+        await SecureStore.setItemAsync('userData', userDataString)
+    }
+}
+
+export const getUserData = async (): Promise<any | null> => {
+    let userDataString: string | null
+
+    if (isWeb) {
+        userDataString = await AsyncStorage.getItem('userData')
+    } else {
+        userDataString = await SecureStore.getItemAsync('userData')
+    }
+
+    if (!userDataString) return null
+
+    try {
+        return JSON.parse(userDataString) // Convert back to object
+    } catch (error) {
+        console.error('Error parsing userData:', error)
+        return null
+    }
+}
+
+export const deleteUserData = async (): Promise<void> => {
+    if (isWeb) {
+        await AsyncStorage.removeItem('userData');
+    } else {
+        await SecureStore.deleteItemAsync('userData');
+    }
+}

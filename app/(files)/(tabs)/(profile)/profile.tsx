@@ -9,6 +9,7 @@ import { GRADIENT_COLORS, PRIMARY_COLOR, TROPHY_COLOR } from '@/constants/colors
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins'
 import AppText from '@/components/app-text'
+import ErrorView from '@/components/error-view'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,7 +56,7 @@ const Profile = () => {
     )
   }
 
-  if (error) return <AppText style={styles.errorText}>Error: {error}</AppText> // Translated
+  if (error) return <ErrorView error={error} />
   if (!data) return <AppText style={styles.errorText}>No data available.</AppText> // Translated
 
   return (
